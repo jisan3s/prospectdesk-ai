@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "viewports": [
+    375,
+    768,
+    1024,
+    1440
+  ],
+  "screenshots": 28,
+  "mockedRequests": 45,
+  "browserErrors": []
+}

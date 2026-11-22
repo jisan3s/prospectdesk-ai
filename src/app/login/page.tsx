@@ -2,6 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Brand, Alert } from "@/components/ui/primitives";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -10,52 +12,62 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [feedbackTone, setFeedbackTone] = useState<"info" | "error" | "success">("info");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     setMessage("");
+    setFeedbackTone("info");
 
-    const supabase = createClient();
+    try {
+      const supabase = createClient();
 
-    if (mode === "signup") {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
 
-      setMessage(
-        error
-          ? error.message
-          : "Check your email to confirm your account."
-      );
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        setMessage(error.message);
+        setFeedbackTone(error ? "error" : "success");
+        setMessage(
+          error
+            ? error.message
+            : "Check your email to confirm your account."
+        );
       } else {
-        router.replace("/");
-        router.refresh();
-      }
-    }
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-    setLoading(false);
+        if (error) {
+          setFeedbackTone("error");
+          setMessage(error.message);
+        } else {
+          router.replace("/");
+          router.refresh();
+        }
+      }
+    } catch {
+      setFeedbackTone("error");
+      setMessage("Unable to connect. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10">
+      <div className="mb-8"><Brand /></div>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md space-y-5 rounded-xl border bg-white p-8 shadow-sm"
+        className="panel w-full max-w-md space-y-6 sm:p-8"
       >
         <div>
           <h1 className="text-2xl font-bold text-slate-900">
-            ProspectDesk AI
+            {mode === "login" ? "Welcome back." : "Your next chapter starts here."}
           </h1>
           <p className="mt-2 text-sm text-slate-600">
             {mode === "login"
@@ -67,18 +79,20 @@ export default function LoginPage() {
         <label className="block text-sm text-slate-700">
           Email
           <input
+            disabled={loading}
             type="email"
             autoComplete="email"
             required
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="mt-1 w-full rounded-lg border p-3"
+            className="field"
           />
         </label>
 
         <label className="block text-sm text-slate-700">
           Password
           <input
+            disabled={loading}
             type="password"
             autoComplete={
               mode === "signup" ? "new-password" : "current-password"
@@ -87,40 +101,40 @@ export default function LoginPage() {
             required
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-1 w-full rounded-lg border p-3"
+            className="field"
           />
         </label>
 
         <button
           disabled={loading}
-          className="w-full rounded-lg bg-indigo-600 p-3 font-medium text-white disabled:opacity-50"
+          className="button-primary w-full"
         >
           {loading
             ? "Processing..."
             : mode === "login"
               ? "Sign In"
-              : "Create Account"}
+              : "Create Account"}<ArrowRight size={17} aria-hidden="true"/>
         </button>
 
         {message && (
-          <p role="status" className="text-sm text-slate-600">
-            {message}
-          </p>
+          <Alert tone={feedbackTone}>{message}</Alert>
         )}
 
         <button
+          disabled={loading}
           type="button"
           onClick={() => {
             setMode(mode === "login" ? "signup" : "login");
             setMessage("");
           }}
-          className="w-full text-sm text-indigo-600"
+          className="min-h-11 w-full text-sm font-medium text-indigo-700 disabled:opacity-50"
         >
           {mode === "login"
             ? "Create a new account"
             : "Already have an account? Sign in"}
         </button>
       </form>
+      <p className="mt-7 flex items-center gap-2 text-xs text-slate-500"><Sparkles size={14} aria-hidden="true"/> Research with Scout. Connect with confidence.</p>
     </main>
   );
 }
