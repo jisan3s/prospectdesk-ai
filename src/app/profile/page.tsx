@@ -1,3 +1,5 @@
+import { AppShell } from "@/components/layout/app-shell";
+import { Alert, LoadingSkeleton } from "@/components/ui/primitives";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { redirect } from "next/navigation";
@@ -19,7 +21,7 @@ async function ProfileContent() {
     .maybeSingle();
 
   if (profileError) {
-    return <main className="p-8 text-red-700">Unable to load your profile.</main>;
+    return <AppShell><main className="workspace"><Alert>Unable to load your profile. Refresh the page to try again.</Alert></main></AppShell>;
   }
 
   const previous = scoutAnalysisSchema.safeParse(profile?.scout_analysis);
@@ -43,7 +45,7 @@ async function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Suspense fallback={<main className="p-8">Loading your profile...</main>}>
+    <Suspense fallback={<AppShell><LoadingSkeleton label="Loading your profile..." /></AppShell>}>
       <ProfileContent />
     </Suspense>
   );

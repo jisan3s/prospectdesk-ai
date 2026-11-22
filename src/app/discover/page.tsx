@@ -1,3 +1,5 @@
+import { AppShell } from "@/components/layout/app-shell";
+import { LoadingSkeleton } from "@/components/ui/primitives";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { redirect } from "next/navigation";
@@ -13,5 +15,5 @@ async function DiscoverContent() {
 }
 
 export default function DiscoverPage() {
-  return <Suspense fallback={<main className="p-8">Loading company discovery...</main>}><DiscoverContent /></Suspense>;
+  return <Suspense fallback={<AppShell><LoadingSkeleton label="Loading company discovery..." /></AppShell>}><DiscoverContent /></Suspense>;
 }
