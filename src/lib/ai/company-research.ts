@@ -1,5 +1,5 @@
 import "server-only";
-import OpenAI from "openai";
+import { createScoutClient, scoutModel } from "./client";
 import { zodTextFormat } from "openai/helpers/zod";
 import { companyInputSchema, researchResultSchema, type researchSourceSchema } from "@/lib/validations/discovery";
 import type { z } from "zod";
@@ -23,10 +23,9 @@ export async function analyzeCompany(company: Company, sources: Source[], profil
   skills?: string[];
   services?: string[];
 }) {
-  if (!process.env.OPENAI_API_KEY) throw new Error("Missing OpenAI API key");
-  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: 25_000, maxRetries: 0 });
+  const client = createScoutClient();
   const result = await client.responses.parse({
-    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+    model: scoutModel(),
     instructions: INSTRUCTIONS,
     input: JSON.stringify({ company, profile, sources: sources.map((s, index) => ({ index, ...s })) }),
     text: { format: zodTextFormat(researchResultSchema, "scout_company_research") },

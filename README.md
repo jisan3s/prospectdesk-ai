@@ -218,7 +218,6 @@ prospectdesk-ai/
 ├── tsconfig.json                      # Strict TypeScript and @/* source alias
 ├── eslint.config.mjs
 ├── playwright.stage7.config.ts         # Existing browser-test configuration
-├── public/                            # Static assets
 ├── src/
 │   ├── proxy.ts                       # Supabase session refresh entry point
 │   ├── app/
@@ -243,10 +242,11 @@ prospectdesk-ai/
 │   │   └── outreach/studio.tsx
 │   └── lib/
 │       ├── ai/                        # Scout profile, research, qualification, outreach modules
+│       ├── http/client.ts              # Shared validated browser API requests
 │       ├── research/tavily.ts          # Search provider integration
 │       ├── security/                  # Request guard, bounded JSON reader, smoke evaluator
 │       ├── supabase/                  # Browser, server, and proxy clients
-│       └── validations/               # Zod schemas and colocated unit tests
+│       └── validations/               # Input/output schemas, UI response contracts, and unit tests
 ├── tests/
 │   ├── unit/                          # Bounded JSON reader tests
 │   ├── evals/                         # Offline output-contract and safety smoke tests
@@ -255,7 +255,7 @@ prospectdesk-ai/
 │   └── fixtures/ui-preview.tsx         # Synthetic feature-workspace fixture
 ├── scripts/
 │   ├── verify-ui.mjs                   # Local mocked browser workflows and screenshots
-│   └── run-live-evals.ts               # Optional live-evaluation runner; see known limitation
+│   └── run-live-evals.ts               # Opt-in live OpenAI smoke evaluation
 ├── artifacts/ui/                      # Existing screenshots and fixture result summary
 └── docs/ui-modernization.md            # Design-system and UI verification report
 ```
@@ -410,6 +410,8 @@ The Vitest command excludes Playwright files and explicitly disables the live RL
 - Score normalization and valid evidence indexes.
 - Outreach channel lengths, required revisions, and rejection of extra ownership fields in strict schemas.
 - Bounded JSON reader behavior, including oversized and invalid payloads.
+- Browser API response validation, HTTP error/status preservation, malformed JSON, and cancellation without retries.
+- Mocked Scout client checks for missing credentials, no automatic retries, per-workflow timeouts, and model selection.
 - Deterministic output-contract and forbidden-phrase regression tests on synthetic adversarial cases.
 
 These tests make no OpenAI or Tavily calls. They do not prove factual accuracy, comprehensive prompt-injection resistance, or production database isolation.
@@ -440,7 +442,13 @@ node scripts/verify-ui.mjs
 
 This script temporarily mounts `tests/fixtures/ui-preview.tsx` as a local preview page, intercepts `/api/` calls with synthetic responses, and checks profile save/analyze, discovery/research/save, duplicate and rate-limit feedback, retry/pending states, scoring, contact capture, and draft editing/review/manual-send transitions. It also checks layout overflow and mobile dialog focus behavior at the four viewport sizes.
 
-Results and screenshots are written under `artifacts/ui/`. The script refuses to overwrite an existing preview directory and removes its temporary route on normal completion or caught failure. Run it only locally with a development server, not against a deployed application. These checks validate UI behavior under mocks; they do not prove that quota RPCs, provider failures, database policies, or live writes behave correctly.
+Results and screenshots are written under `artifacts/ui/` by default. To use an isolated local development server and preserve existing screenshot artifacts:
+
+```bash
+UI_TEST_BASE_URL=http://127.0.0.1:3001 UI_ARTIFACT_DIR=/tmp/prospectdesk-ui-check node scripts/verify-ui.mjs
+```
+
+Start that server separately with `npm run dev -- --hostname 127.0.0.1 --port 3001`. The optional `UI_TEST_BASE_URL` must use a loopback host; `UI_ARTIFACT_DIR` selects the output directory. The script refuses to overwrite an existing preview directory and removes its temporary route on normal completion or caught failure. Run it only locally with a development server, not against a deployed application. These checks validate UI behavior under mocks; they do not prove that quota RPCs, provider failures, database policies, or live writes behave correctly.
 
 ### Live RLS isolation test
 
@@ -469,11 +477,24 @@ npx vitest run tests/integration/rls.integration.test.ts
 
 The suite creates one synthetic company for user A, checks that B cannot read/update/delete it or forge its owner, and attempts cleanup of that exact record. It skips unless `RUN_RLS_TESTS=1` and refuses `NODE_ENV=production`. You must still verify that the test URL is non-production; the test cannot identify a production project by its URL. Other user-data tables need separate isolation checks.
 
-### Live AI evaluation: current limitation
+### Optional live AI evaluation
 
-`scripts/run-live-evals.ts` contains a two-case synthetic OpenAI evaluation gated by `RUN_LIVE_EVALS=1` and `OPENAI_API_KEY`. It uses the same optional `OPENAI_MODEL` override.
+`scripts/run-live-evals.ts` contains a two-case synthetic OpenAI evaluation gated by `RUN_LIVE_EVALS=1` and `OPENAI_API_KEY`. It uses the same optional `OPENAI_MODEL` override. Its asynchronous entry point works with the project's current module configuration.
 
-The existing direct `tsx` execution path has a module-mode problem: the script uses top-level `await`, while the root package has no ESM declaration, causing a CommonJS transform error. Fix or establish an ESM-compatible invocation before treating this as a runnable evaluation command. No live evaluation is part of the default tests, and this documentation task does not change the runner. Any eventual live run consumes OpenAI credits and remains a small smoke evaluation, not a safety certification.
+Only when you explicitly choose to spend OpenAI credits, load your local configuration and run:
+
+```bash
+RUN_LIVE_EVALS=1 node --env-file=.env.local --import tsx scripts/run-live-evals.ts
+```
+
+The disabled and missing-key guards can be checked without provider calls:
+
+```bash
+env -u RUN_LIVE_EVALS node --import tsx scripts/run-live-evals.ts
+env -u OPENAI_API_KEY RUN_LIVE_EVALS=1 node --import tsx scripts/run-live-evals.ts
+```
+
+Both guard checks intentionally exit with status 1 and a configuration message. A live run is not part of the default tests, consumes API credits, and remains a small smoke evaluation rather than a safety certification.
 
 ### Coverage still requiring manual or integration checks
 
@@ -578,9 +599,11 @@ This mapping describes functionality visible in the current source, rather than 
 | 4 — Company Research and Discovery | Tavily search, company-domain research, evidence saving, duplicate handling. | Discovery workspace/routes and research module present; save/quota RPC definitions missing. |
 | 5 — Decision-Maker Identification and Lead Scoring | Leadership-source search, contact candidates, evidence-based company scores. | Qualification workspace, schemas, routes, and AI rubric present. |
 | 6 — Personalized Outreach Studio | Draft generation/editing, review, approval/rejection, manual-send tracking, follow-ups. | Studio, generator, and transition API present; expected database triggers require verification. |
-| 7 — Security Hardening and Testing | Request guard, quotas, bounded JSON helper, offline/e2e/RLS tests, evaluation tooling. | Additions present; shared guard integrated only into outreach generation, live eval runner has a module-mode limitation, and live coverage remains opt-in. |
+| 7 — Security Hardening and Testing | Request guard, quotas, bounded JSON helper, offline/e2e/RLS tests, evaluation tooling. | Additions present; shared guard integrated only into outreach generation, and live coverage remains opt-in. |
 | UI modernization | Shared responsive shell, design tokens, feature layouts, loading/error states, screenshot checks. | Implemented across existing pages; details in `docs/ui-modernization.md`. |
 | 8 | Further development. | Not documented as completed in this repository. |
+
+See the [codebase audit and cleanup report](docs/codebase-audit.md) for the baseline, verified cleanup, regression results, and retained risks.
 
 ## Future improvements
 
@@ -589,7 +612,7 @@ The following are proposed follow-ups, not implemented features or release commi
 - Restore authoritative, version-controlled database migrations and Supabase setup configuration, including all RLS policies, quotas, and outreach workflow triggers.
 - Add a sanitized environment template and pin a supported Node runtime.
 - Extend and test consistent request-size/hourly safeguards across the remaining costly endpoints; review edge/account abuse controls.
-- Fix the live-evaluation runner's module mode and broaden authenticated, cross-table RLS, concurrency, and provider-failure tests.
+- Broaden authenticated, cross-table RLS, concurrency, and provider-failure tests.
 - Store immutable server-owned research snapshots where stronger provenance is needed.
 - Expose safe saved research/personalization context and last-updated information in Outreach, and improve draft searching and unsaved-edit navigation feedback.
 - Add privacy-aware operational monitoring, retention/deletion workflows, and a broader accessibility review.

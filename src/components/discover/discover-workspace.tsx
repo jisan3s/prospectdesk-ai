@@ -4,36 +4,21 @@ import { useState } from "react";
 import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, EmptyState, PageHeading, LoadingSkeleton } from "@/components/ui/primitives";
 import type { z } from "zod";
-import type { companyInputSchema, researchResultSchema, researchSourceSchema } from "@/lib/validations/discovery";
+import { companyInputSchema } from "@/lib/validations/discovery";
+import { HttpError, postJson } from "@/lib/http/client";
+import {
+  companySavedSchema, researchResponseSchema, searchResponseSchema,
+  type ResearchReport, type SearchHit,
+} from "@/lib/validations/responses";
 
 type Company = z.infer<typeof companyInputSchema>;
-type Research = z.infer<typeof researchResultSchema>;
-type Source = z.infer<typeof researchSourceSchema>;
-type Hit = { title: string; url: string; snippet: string };
-type Report = { company: Company; sources: Source[]; research: Research; usage?: { input: number | null; output: number | null } };
-
-class RequestError extends Error {
-  constructor(message: string, readonly status: number) { super(message); }
-}
-
-async function postJSON(url: string, data: unknown): Promise<Record<string, unknown>> {
-  const response = await fetch(url, {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  const text = await response.text();
-  let parsed: Record<string, unknown>;
-  try { parsed = JSON.parse(text); } catch { throw new Error(`Unexpected response (${response.status}). Check Next.js terminal.`); }
-  if (!response.ok) throw new RequestError(typeof parsed.error === "string" ? parsed.error : `Request failed (${response.status})`, response.status);
-  return parsed;
-}
 
 export function DiscoverWorkspace() {
   const [industry, setIndustry] = useState("HVAC");
   const [location, setLocation] = useState("Texas, United States");
-  const [hits, setHits] = useState<Hit[]>([]);
+  const [hits, setHits] = useState<SearchHit[]>([]);
   const [company, setCompany] = useState<Company>({ name: "", website: "", industry: "HVAC", location: "Texas, United States" });
-  const [report, setReport] = useState<Report | null>(null);
+  const [report, setReport] = useState<ResearchReport | null>(null);
   const [busy, setBusy] = useState<"search" | "research" | "save" | null>(null);
   const [message, setMessage] = useState("");
   const [feedbackTone, setFeedbackTone] = useState<"info" | "error">("info");
@@ -43,14 +28,15 @@ export function DiscoverWorkspace() {
   async function searchCompanies() {
     setBusy("search"); setMessage(""); setFeedbackTone("info"); setHits([]); setReport(null); setSaved(false); setDuplicate(false);
     try {
-      const res = await postJSON("/api/discover/search", { industry, location });
-      setHits((res.results as Hit[]) ?? []);
-      if (!(res.results as Hit[])?.length) setMessage("No results returned. Try another industry or location.");
+      const res = await postJson("/api/discover/search", searchResponseSchema, { industry, location });
+      setHits(res.results);
+      if (!res.results.length) setMessage("No results returned. Try another industry or location.");
     } catch (error) { setFeedbackTone("error"); setMessage(error instanceof Error ? error.message : "Search failed"); }
     finally { setBusy(null); }
   }
 
-  function chooseHit(hit: Hit) {
+  function chooseHit(hit: SearchHit) {
+    setFeedbackTone("info");
     let rootUrl = hit.url;
     try { rootUrl = new URL(hit.url).origin; } catch { /* user can edit */ }
     setCompany({ name: hit.title.slice(0, 120), website: rootUrl, industry, location });
@@ -61,48 +47,49 @@ export function DiscoverWorkspace() {
   async function researchCompany() {
     setBusy("research"); setMessage(""); setFeedbackTone("info"); setReport(null); setSaved(false); setDuplicate(false);
     try {
-      const result = await postJSON("/api/discover/research", company);
-      setReport(result as unknown as Report);
+      const result = await postJson("/api/discover/research", researchResponseSchema, company);
+      setReport(result);
     } catch (error) { setFeedbackTone("error"); setMessage(error instanceof Error ? error.message : "Research failed"); }
     finally { setBusy(null); }
   }
 
   async function saveCompany() {
-  if (!report) return;
+    if (!report) return;
 
-  setBusy("save");
-  setMessage(""); setFeedbackTone("info");
+    setBusy("save");
+    setMessage(""); setFeedbackTone("info");
 
-  try {
-    // Send only the fields accepted by the Save API.
-    const payload = {
-      company: report.company,
-      sources: report.sources,
-      research: report.research,
-    };
+    try {
+      // Send only the fields accepted by the Save API.
+      const payload = {
+        company: report.company,
+        sources: report.sources,
+        research: report.research,
+      };
 
-    const result = await postJSON(
-      "/api/discover/save",
-      payload
-    );
+      const result = await postJson(
+        "/api/discover/save",
+        companySavedSchema,
+        payload
+      );
 
-    setSaved(true);
+      setSaved(true);
 
-    setMessage(
-      `Company saved successfully (ID: ${result.companyId}). ` +
-      `Refresh your dashboard to see the updated Companies count.`
-    );
-  } catch (error) { setFeedbackTone("error");
-    if (error instanceof RequestError && error.status === 409) setDuplicate(true);
-    setMessage(
-      error instanceof Error
-        ? error.message
-        : "Unable to save company"
-    );
-  } finally {
-    setBusy(null);
+      setMessage(
+        `Company saved successfully (ID: ${result.companyId}). ` +
+        `Refresh your dashboard to see the updated Companies count.`
+      );
+    } catch (error) { setFeedbackTone("error");
+      if (error instanceof HttpError && error.status === 409) setDuplicate(true);
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Unable to save company"
+      );
+    } finally {
+      setBusy(null);
+    }
   }
-}
 
   return (
     <AppShell><main className="workspace feature-content">
@@ -132,7 +119,7 @@ export function DiscoverWorkspace() {
           <p className="mt-1 text-sm text-slate-600">Correct the business name and enter its real corporate website, not a directory or LinkedIn URL.</p>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             {(["name", "website", "industry", "location"] as const).map(field => <label key={field} className="text-sm capitalize">{field}
-              <input disabled={!!busy} className="field" value={company[field]} onChange={e => { setCompany(old => ({ ...old, [field]: e.target.value })); setReport(null); setSaved(false); setDuplicate(false); }} maxLength={field === "website" ? 2048 : 200}/>
+              <input disabled={!!busy} className="field" value={company[field]} onChange={e => { setCompany(old => ({ ...old, [field]: e.target.value })); setReport(null); setSaved(false); setDuplicate(false); }} maxLength={companyInputSchema.shape[field].maxLength ?? undefined}/>
             </label>)}
           </div>
           <button disabled={!!busy || !company.name || !company.website} onClick={researchCompany} className="mt-4 rounded-lg bg-indigo-600 px-5 py-3 text-white disabled:opacity-50">{busy === "research" ? "Scout is researching..." : "Research this company"}</button>

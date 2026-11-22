@@ -37,7 +37,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </header>
       <div id="main-content" tabIndex={-1}>{children}</div>
     </div>
-    <dialog ref={drawer} aria-labelledby="navigation-title" className="mobile-drawer m-0 h-dvh max-h-dvh w-80 max-w-[90vw] border-r border-slate-200 bg-white p-5 backdrop:bg-slate-950/40" onClick={event => { if (event.target === event.currentTarget) drawer.current?.close(); }}>
+    <dialog ref={drawer} aria-labelledby="navigation-title" className="m-0 h-dvh max-h-dvh w-80 max-w-[90vw] border-r border-slate-200 bg-white p-5 backdrop:bg-slate-950/40" onClick={event => { if (event.target === event.currentTarget) drawer.current?.close(); }}>
       <div className="mb-8 flex items-center justify-between gap-2"><span id="navigation-title"><Brand/></span><button type="button" className="icon-button" aria-label="Close navigation" onClick={() => drawer.current?.close()}><X size={20}/></button></div>{links()}
     </dialog>
   </div>;

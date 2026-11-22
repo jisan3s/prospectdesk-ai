@@ -6,6 +6,8 @@ import {
   type ProfileInput,
   type ScoutAnalysis,
 } from "@/lib/validations/profile";
+import { postJson, requestJson } from "@/lib/http/client";
+import { profileSavedSchema, profileAnalysisResponseSchema } from "@/lib/validations/responses";
 import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, EmptyState, PageHeading } from "@/components/ui/primitives";
 
@@ -26,7 +28,7 @@ export function ProfileEditor({ initial, initialAnalysis, lastAnalyzedAt }: Prop
   const [notice, setNotice] = useState("");
   const [feedbackTone, setFeedbackTone] = useState<"info" | "error">("info");
 
-  function change(key: keyof ProfileInput, value: string) {
+  function change(key: Exclude<keyof ProfileInput, "skills" | "services">, value: string) {
     setForm(old => ({ ...old, [key]: value }));
     setDirty(true);
   }
@@ -40,33 +42,26 @@ export function ProfileEditor({ initial, initialAnalysis, lastAnalyzedAt }: Prop
       services: csvToArray(servicesText),
     };
   }
-  async function save(event?: FormEvent<HTMLFormElement>): Promise<boolean> {
-    event?.preventDefault();
+  async function save(event: FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
     const parsed = profileInputSchema.safeParse(collect());
     if (!parsed.success) {
       setFeedbackTone("error");
       setNotice("Please check field lengths, URLs, and comma-separated skills/services.");
-      return false;
+      return;
     }
     setBusy("save");
     setNotice(""); setFeedbackTone("info");
     try {
-      const response = await fetch("/api/profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Save failed");
+      await postJson("/api/profile", profileSavedSchema, parsed.data);
       setForm(parsed.data);
       setAnalysis(null);
       setAnalyzedAt(null);
       setDirty(false);
       setNotice("Profile saved. You can now run Scout analysis.");
-      return true;
     } catch (error) { setFeedbackTone("error");
       setNotice(error instanceof Error ? error.message : "Unable to save");
-      return false;
+      return;
     } finally {
       setBusy(null);
     }
@@ -80,9 +75,7 @@ export function ProfileEditor({ initial, initialAnalysis, lastAnalyzedAt }: Prop
     setBusy("analyze");
     setNotice(""); setFeedbackTone("info");
     try {
-      const response = await fetch("/api/profile/analyze", { method: "POST" });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Analysis failed");
+      const data = await requestJson("/api/profile/analyze", profileAnalysisResponseSchema, { method: "POST" });
       setAnalysis(data.analysis);
       setAnalyzedAt(new Date().toISOString());
       setNotice("Scout analysis completed and saved.");
@@ -93,7 +86,6 @@ export function ProfileEditor({ initial, initialAnalysis, lastAnalyzedAt }: Prop
     }
   }
 
-  const inputClass = "field";
   return (
     <AppShell><main className="workspace feature-content">
       <div className="mx-auto max-w-6xl space-y-8">
@@ -104,29 +96,29 @@ export function ProfileEditor({ initial, initialAnalysis, lastAnalyzedAt }: Prop
           <div><h2 className="mb-1 text-lg font-semibold">Professional profile</h2><p className="mb-5 text-sm text-slate-500">Add your own LinkedIn or CV content. Scout does not scrape LinkedIn or fetch these URLs.</p></div>
           <div className="grid gap-4 md:grid-cols-2">
             <label className="text-sm font-medium">Display name
-              <input disabled={!!busy} className={inputClass} maxLength={120} value={form.display_name} onChange={e => change("display_name", e.target.value)} />
+              <input disabled={!!busy} className="field" maxLength={120} value={form.display_name} onChange={e => change("display_name", e.target.value)} />
             </label>
             <label className="text-sm font-medium">Professional headline
-              <input disabled={!!busy} className={inputClass} maxLength={200} value={form.headline} onChange={e => change("headline", e.target.value)} />
+              <input disabled={!!busy} className="field" maxLength={200} value={form.headline} onChange={e => change("headline", e.target.value)} />
             </label>
             <label className="text-sm font-medium">LinkedIn profile URL
-              <input disabled={!!busy} type="url" className={inputClass} value={form.linkedin_url} onChange={e => change("linkedin_url", e.target.value)} placeholder="https://www.linkedin.com/in/..." />
+              <input disabled={!!busy} type="url" className="field" value={form.linkedin_url} onChange={e => change("linkedin_url", e.target.value)} placeholder="https://www.linkedin.com/in/..." />
             </label>
             <label className="text-sm font-medium">Portfolio URL
-              <input disabled={!!busy} type="url" className={inputClass} value={form.portfolio_url} onChange={e => change("portfolio_url", e.target.value)} placeholder="https://your-portfolio.com" />
+              <input disabled={!!busy} type="url" className="field" value={form.portfolio_url} onChange={e => change("portfolio_url", e.target.value)} placeholder="https://your-portfolio.com" />
             </label>
           </div>
           <label className="block text-sm font-medium">Professional summary
-            <textarea disabled={!!busy} className={inputClass} rows={4} maxLength={2500} value={form.summary} onChange={e => change("summary", e.target.value)} />
+            <textarea disabled={!!busy} className="field" rows={4} maxLength={2500} value={form.summary} onChange={e => change("summary", e.target.value)} />
           </label>
           <label className="block text-sm font-medium">Skills (comma-separated, max 20)
-            <input disabled={!!busy} className={inputClass} value={skillsText} onChange={e => { setSkillsText(e.target.value); setDirty(true); }} placeholder="React, TypeScript, Webflow" />
+            <input disabled={!!busy} className="field" value={skillsText} onChange={e => { setSkillsText(e.target.value); setDirty(true); }} placeholder="React, TypeScript, Webflow" />
           </label>
           <label className="block text-sm font-medium">Services you actually offer (comma-separated)
-            <input disabled={!!busy} className={inputClass} value={servicesText} onChange={e => { setServicesText(e.target.value); setDirty(true); }} placeholder="Website development, API integration" />
+            <input disabled={!!busy} className="field" value={servicesText} onChange={e => { setServicesText(e.target.value); setDirty(true); }} placeholder="Website development, API integration" />
           </label>
           <label className="block text-sm font-medium">LinkedIn About / Experience / selected CV text
-            <textarea disabled={!!busy} className={inputClass} rows={8} maxLength={6500} value={form.raw_profile_text} onChange={e => change("raw_profile_text", e.target.value)} placeholder="Paste relevant content you own or have permission to use..." />
+            <textarea disabled={!!busy} className="field" rows={8} maxLength={6500} value={form.raw_profile_text} onChange={e => change("raw_profile_text", e.target.value)} placeholder="Paste relevant content you own or have permission to use..." />
           </label>
           <div className="flex flex-wrap gap-3">
             <button type="submit" disabled={busy !== null} className="rounded-lg bg-slate-900 px-5 py-3 font-medium text-white disabled:opacity-50">{busy === "save" ? "Saving..." : "Save profile"}</button>
