@@ -72,6 +72,25 @@ async function DashboardContent() {
   const qualifiedLeadsCount = [...latestScores.values()]
     .filter((score) => score >= 70).length;
 
+    const {
+    count: outreachDraftsCount,
+    error: draftsCountError,
+  } = await supabase
+    .from("outreach_drafts")
+    .select("id", {
+      count: "exact",
+      head: true,
+    })
+    .eq("owner_id", user.id)
+    .in("status", ["draft", "in_review"]);
+
+  if (draftsCountError) {
+    console.error(
+      "Outreach count failed:",
+      draftsCountError.code
+    );
+  }
+
   // 5. Prepare dashboard metrics
   const metrics = [
     {
@@ -83,7 +102,9 @@ async function DashboardContent() {
     { label: "Qualified Leads", value: String(qualifiedLeadsCount), icon: Target },
     {
       label: "Outreach Drafts",
-      value: "0",
+      value: draftsCountError
+        ? "—"
+        : String(outreachDraftsCount ?? 0),
       icon: MessageSquare,
     },
   ];
@@ -107,6 +128,13 @@ async function DashboardContent() {
         className="text-indigo-600 hover:underline"
       >
         Lead Qualification
+      </Link>
+
+      <Link
+        href="/outreach"
+        className="text-indigo-600 hover:underline"
+      >
+        Outreach Studio
       </Link>
 
       <div className="grid gap-4 md:grid-cols-4">
