@@ -9,6 +9,7 @@ import {
   Target,
   MessageSquare,
 } from "lucide-react";
+import Link from "next/link";
 
 // Render the authenticated dashboard for each request.
 async function DashboardContent() {
@@ -41,6 +42,36 @@ async function DashboardContent() {
     console.error("Company count error:", countError.message);
   }
 
+  const [
+    { count: contactsCount },
+    { data: scoreRows },
+  ] = await Promise.all([
+    supabase
+      .from("contacts")
+      .select("id", { count: "exact", head: true })
+      .eq("owner_id", user.id),
+
+    supabase
+      .from("lead_scores")
+      .select("company_id, score, created_at")
+      .eq("owner_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1000),
+  ]);
+
+  // Keep the latest score for each company.
+  const latestScores = new Map<string, number>();
+
+  for (const row of scoreRows ?? []) {
+    if (!latestScores.has(row.company_id)) {
+      latestScores.set(row.company_id, row.score);
+    }
+  }
+
+  // Scores of 70 or higher count as qualified.
+  const qualifiedLeadsCount = [...latestScores.values()]
+    .filter((score) => score >= 70).length;
+
   // 5. Prepare dashboard metrics
   const metrics = [
     {
@@ -48,16 +79,8 @@ async function DashboardContent() {
       value: countError ? "—" : String(count ?? 0),
       icon: Building2,
     },
-    {
-      label: "Contacts",
-      value: "0",
-      icon: Users,
-    },
-    {
-      label: "Qualified Leads",
-      value: "0",
-      icon: Target,
-    },
+    { label: "Contacts", value: String(contactsCount ?? 0), icon: Users },
+    { label: "Qualified Leads", value: String(qualifiedLeadsCount), icon: Target },
     {
       label: "Outreach Drafts",
       value: "0",
@@ -71,6 +94,20 @@ async function DashboardContent() {
       <h1 className="mb-6 text-3xl font-bold text-slate-900">
         ProspectDesk AI Dashboard
       </h1>
+
+      <a
+        href="/profile"
+        className="mb-6 inline-block rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-700"
+      >
+        Open Scout Profile Analyzer
+      </a>
+
+      <Link
+        href="/qualification"
+        className="text-indigo-600 hover:underline"
+      >
+        Lead Qualification
+      </Link>
 
       <div className="grid gap-4 md:grid-cols-4">
         {metrics.map(({ label, value, icon: Icon }) => (
