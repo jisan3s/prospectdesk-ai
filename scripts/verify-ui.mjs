@@ -2,16 +2,23 @@ import { chromium, expect } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 // Run against a LOCAL development server only. The temporary route contains synthetic data.
+const baseUrl = new URL(process.env.UI_TEST_BASE_URL || "http://127.0.0.1:3000");
+if (!["127.0.0.1", "localhost", "[::1]"].includes(baseUrl.hostname)) {
+  throw new Error("UI fixtures must run against a local development server.");
+}
+const artifactDirectory = path.resolve(process.env.UI_ARTIFACT_DIR || "artifacts/ui");
 const previewDirectory = path.resolve("src/app/ui-review");
 if (fs.existsSync(previewDirectory))
   throw new Error("Refusing to overwrite an existing ui-review route.");
 fs.mkdirSync(previewDirectory);
 fs.copyFileSync(new URL("../tests/fixtures/ui-preview.tsx", import.meta.url), path.join(previewDirectory, "page.tsx"));
-fs.mkdirSync("artifacts/ui", { recursive: true });
+fs.mkdirSync(artifactDirectory, { recursive: true });
 let browser;
 const companyId = '019abbaa-1111-7111-8111-aaaaaaaaaaaa';
 let saveConflict = false;
 let searchFailure = false;
+let malformedSearch = false;
+let draftListFailure = false;
 let pauseSearch = false;
 let releaseSearch;
 let screenshotCount = 0;
@@ -43,6 +50,8 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
       status = 429;
       data = { error: 'Search rate limit reached. Please try again later.' };
     }
+    else if (path === '/api/discover/search' && malformedSearch)
+      data = { results: [{ title: 'Incomplete result' }] };
     else if (path === '/api/discover/search')
       data = { results: [{ title: 'Evergreen Consulting', url: 'https://example.com/services', snippet: 'Consulting services for professional businesses.' }] };
     else if (path === '/api/discover/research')
@@ -56,13 +65,15 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
     else if (path === '/api/qualification/decision-makers')
       data = { results: [{ title: 'Leadership team', url: 'https://example.com/team', snippet: 'Review the company leadership team.' }], warning: 'Search candidates require verification.' };
     else if (path === '/api/qualification/contacts')
-      data = { saved: true };
+      data = { contact: { id: 'contact-1', full_name: 'Alex Morgan', job_title: 'Operations Director' } };
     else if (path === '/api/outreach/generate') {
       draft = { ...draft, status: 'draft' };
       data = { draft, cautions: ['Verify the current contact role before outreach.'] };
     }
-    else if (path === '/api/outreach/drafts')
-      data = { drafts: [draft] };
+    else if (path === '/api/outreach/drafts') {
+      status = draftListFailure ? 503 : 200;
+      data = draftListFailure ? { error: 'Draft list temporarily unavailable' } : { drafts: [draft] };
+    }
     else if (path.startsWith('/api/outreach/drafts/')) {
       const payload = route.request().postDataJSON();
       expect(payload.revision).toBe(draft.revision);
@@ -80,14 +91,14 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
     }
     await route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(data) });
   });
-  await page.goto('http://127.0.0.1:3000/ui-review');
+  await page.goto(new URL("/ui-review", baseUrl).href);
   await page.addStyleTag({ content: 'nextjs-portal { display:none !important; }' });
   async function captureDetail(name) {
     for (const width of [375, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.locator('[aria-label="Preview controls"]').evaluate(el => el.style.visibility = 'hidden');
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      await page.screenshot({ path: `artifacts/ui/${name}-${width}.png`, fullPage: true });
+      await page.screenshot({ path: path.join(artifactDirectory, `${name}-${width}.png`), fullPage: true });
       screenshotCount++;
       await page.locator('[aria-label="Preview controls"]').evaluate(el => el.style.visibility = 'visible');
     }
@@ -98,6 +109,8 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
   await expect(page.getByRole('heading', { name: 'Your profile analysis', exact: true })).toBeVisible();
   await captureDetail('profile-analysis');
   await page.getByRole('button', { name: 'discover', exact: true }).click();
+  await expect(page.getByLabel('industry', { exact: true })).toHaveAttribute('maxlength', '120');
+  await expect(page.getByLabel('location', { exact: true })).toHaveAttribute('maxlength', '150');
   await page.getByRole('button', { name: 'Search companies', exact: true }).click();
   await expect(page.getByText('Discovered candidate', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Use as candidate' }).click();
@@ -122,6 +135,12 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
   releaseSearch();
   pauseSearch = false;
   await expect(page.getByText('Discovered candidate', { exact: true })).toBeVisible();
+  malformedSearch = true;
+  await page.getByRole('button', { name: 'Search companies', exact: true }).click();
+  await expect(page.getByRole('main').getByRole('alert')).toContainText('unexpected response');
+  malformedSearch = false;
+  await page.getByRole('button', { name: 'Search companies', exact: true }).click();
+  await expect(page.getByText('Discovered candidate', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'qualification', exact: true }).click();
   await page.getByRole('button', { name: 'Score company with Scout' }).click();
   await expect(page.getByText('Qualified lead', { exact: true })).toBeVisible();
@@ -134,9 +153,11 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
   await page.getByRole('button', { name: 'Save contact candidate' }).click();
   await expect(page.getByRole('status')).toContainText('Contact candidate saved');
   await page.getByRole('button', { name: 'outreach', exact: true }).click();
+  const draftReadsBeforeGeneration = calls.filter(url => url === '/api/outreach/drafts').length;
   await page.getByRole('button', { name: 'Generate draft with Scout' }).click();
   const message = page.getByRole('textbox', { name: 'Message', exact: true });
   await expect(message).toBeVisible();
+  expect(calls.filter(url => url === '/api/outreach/drafts').length).toBe(draftReadsBeforeGeneration);
   await message.fill(draft.body + ' Thank you.');
   await expect(page.getByRole('button', { name: 'Submit for review' })).toBeDisabled();
   await page.getByRole('button', { name: 'Save edits' }).click();
@@ -155,6 +176,15 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
   await page.getByRole('button', { name: 'Mark manually sent' }).click();
   await expect(page.getByRole('status')).toContainText('No message was transmitted');
   expect(draft.status).toBe('manually_sent');
+  // A failed initial list request must surface as an error rather than an empty success state.
+  await page.getByRole('button', { name: 'profile', exact: true }).click();
+  draftListFailure = true;
+  await page.getByRole('button', { name: 'outreach', exact: true }).click();
+  await expect(page.getByRole('main').getByRole('alert')).toContainText('Draft list temporarily unavailable');
+  await expect(page.getByText('Loading saved drafts…')).toHaveCount(0);
+  draftListFailure = false;
+  await page.getByRole('button', { name: 'profile', exact: true }).click();
+  await page.getByRole('button', { name: 'outreach', exact: true }).click();
   // Keep a reviewable draft selected for visual inspection.
   draft = { ...draft, status: 'draft' };
   await page.getByRole('button', { name: 'Generate draft with Scout' }).click();
@@ -167,7 +197,7 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
       }
       await page.locator('[aria-label="Preview controls"]').evaluate(el => el.style.visibility = 'hidden');
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-      await page.screenshot({ path: `artifacts/ui/${view}-${width}.png`, fullPage: true });
+      await page.screenshot({ path: path.join(artifactDirectory, `${view}-${width}.png`), fullPage: true });
       screenshotCount++;
       await page.locator('[aria-label="Preview controls"]').evaluate(el => el.style.visibility = 'visible');
     }
@@ -183,15 +213,15 @@ const report = { company: { name: 'Evergreen Consulting', website: 'https://exam
     }
   }
   await page.setViewportSize({ width: 375, height: 900 });
-  await page.goto('http://127.0.0.1:3000/login');
+  await page.goto(new URL("/login", baseUrl).href);
   await page.addStyleTag({ content: 'nextjs-portal {visibility:hidden}' });
-  await page.screenshot({ path: 'artifacts/ui/login-375.png', fullPage: true });
+  await page.screenshot({ path: path.join(artifactDirectory, "login-375.png"), fullPage: true });
   screenshotCount++;
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.screenshot({ path: 'artifacts/ui/login-1440.png', fullPage: true });
+  await page.screenshot({ path: path.join(artifactDirectory, "login-1440.png"), fullPage: true });
   screenshotCount++;
-  console.log(JSON.stringify({ result: 'passed', viewports: [375, 768, 1024, 1440], screenshots: screenshotCount, mockedRequests: calls.length, browserErrors: errors }, null, 2));
-  fs.writeFileSync('artifacts/ui/fixture-results.json', JSON.stringify({ passed: errors.length === 0, viewports: [375, 768, 1024, 1440], screenshots: screenshotCount, mockedRequests: calls.length, browserErrors: errors }, null, 2));
+  console.log(JSON.stringify({ result: errors.length ? 'failed' : 'passed', viewports: [375, 768, 1024, 1440], screenshots: screenshotCount, mockedRequests: calls.length, browserErrors: errors }, null, 2));
+  fs.writeFileSync(path.join(artifactDirectory, "fixture-results.json"), JSON.stringify({ passed: errors.length === 0, viewports: [375, 768, 1024, 1440], screenshots: screenshotCount, mockedRequests: calls.length, browserErrors: errors }, null, 2));
   if (errors.length)
     throw new Error("Browser errors were recorded");
 })().catch(error => {

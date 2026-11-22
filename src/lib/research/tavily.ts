@@ -9,7 +9,7 @@ const providerResponseSchema = z.object({
   })).default([]),
 });
 
-export type SearchHit = { title: string; url: string; snippet: string };
+import type { SearchHit } from "@/lib/validations/responses";
 
 export async function searchWeb(query: string, includeDomains?: string[]): Promise<SearchHit[]> {
   if (!process.env.TAVILY_API_KEY) throw new Error("Missing Tavily API key");

@@ -6,22 +6,18 @@ import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, EmptyState, PageHeading } from "@/components/ui/primitives";
 import type { Qualification } from "@/lib/validations/qualification";
 
+import { postJson } from "@/lib/http/client";
+import {
+  acknowledgementSchema, leadershipResponseSchema, qualificationResponseSchema,
+  type Evidence, type SearchHit,
+} from "@/lib/validations/responses";
+
 type Company = { id: string; name: string; website: string | null };
-type Hit = { title: string; url: string; snippet: string };
-type Source = { id: string; url: string; finding: string };
-
-async function submit(url: string, payload: unknown) {
-  const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
-  return data;
-}
-
 export function QualificationWorkspace({ companies }: { companies: Company[] }) {
   const [companyId, setCompanyId] = useState(companies[0]?.id ?? "");
   const [assessment, setAssessment] = useState<Qualification | null>(null);
-  const [sources, setSources] = useState<Source[]>([]);
-  const [hits, setHits] = useState<Hit[]>([]);
+  const [sources, setSources] = useState<Evidence[]>([]);
+  const [hits, setHits] = useState<SearchHit[]>([]);
   const [fullName, setFullName] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
@@ -34,15 +30,15 @@ export function QualificationWorkspace({ companies }: { companies: Company[] }) 
     setBusy(true); setNotice(""); setFeedbackTone("info");
     try {
       if (kind === "score") {
-        const result = await submit("/api/qualification/score", { companyId });
+        const result = await postJson("/api/qualification/score", qualificationResponseSchema, { companyId });
         setAssessment(result.assessment); setSources(result.sources);
         setNotice("Score saved. Suggested roles are hypotheses, not named contacts.");
       } else if (kind === "decision-makers") {
-        const result = await submit("/api/qualification/decision-makers", { companyId });
+        const result = await postJson("/api/qualification/decision-makers", leadershipResponseSchema, { companyId });
         setHits(result.results);
         setNotice(result.warning);
       } else {
-        await submit("/api/qualification/contacts", { companyId, fullName, jobTitle, sourceUrl, linkedinUrl });
+        await postJson("/api/qualification/contacts", acknowledgementSchema, { companyId, fullName, jobTitle, sourceUrl, linkedinUrl });
         setNotice("Contact candidate saved. Verify source and current employment before outreach.");
         setFullName(""); setJobTitle(""); setSourceUrl(""); setLinkedinUrl("");
       }
@@ -50,14 +46,13 @@ export function QualificationWorkspace({ companies }: { companies: Company[] }) 
     finally { setBusy(false); }
   }
 
-  const inputClass = "field";
   return <AppShell><main className="workspace feature-content">
     <div className="mx-auto max-w-6xl space-y-6">
       <PageHeading eyebrow="Scout / Lead intelligence" title="Turn evidence into opportunity." description="Evaluate saved companies, explore buyer roles, and record contact candidates with supporting sources." />
       {!companies.length && <EmptyState title="Your prospect list starts here"><Link href="/discover" className="font-medium text-indigo-700 underline">Discover and research a company</Link> before scoring leads or finding decision-makers.</EmptyState>}
       <section id="companies" className="space-y-4 panel">
         <h2 className="text-lg font-semibold">1. Choose a company</h2>
-        <select disabled={!!busy} aria-label="Company" className={inputClass} value={companyId} onChange={event => { setCompanyId(event.target.value); setAssessment(null); setSources([]); setHits([]); }}>
+        <select disabled={!!busy} aria-label="Company" className="field" value={companyId} onChange={event => { setCompanyId(event.target.value); setAssessment(null); setSources([]); setHits([]); }}>
           {companies.map(c => <option key={c.id} value={c.id}>{c.name} — {c.website}</option>)}
         </select>
         <button disabled={busy || !companyId} className="button-primary" onClick={() => action("score")}>Score company with Scout</button>
@@ -82,10 +77,10 @@ export function QualificationWorkspace({ companies }: { companies: Company[] }) 
       <section className="space-y-3 panel">
         <h2 className="text-lg font-semibold">4. Add a verified-by-you contact candidate</h2>
         <p className="text-sm text-amber-800">Open the original source and confirm the person, employer, and current job title. Saving does not mark them independently verified.</p>
-        <label className="block text-sm">Full name<input disabled={!!busy} className={inputClass} value={fullName} onChange={e => setFullName(e.target.value)} /></label>
-        <label className="block text-sm">Current job title<input disabled={!!busy} className={inputClass} value={jobTitle} onChange={e => setJobTitle(e.target.value)} /></label>
-        <label className="block text-sm">Source URL<input disabled={!!busy} type="url" className={inputClass} value={sourceUrl} onChange={e => setSourceUrl(e.target.value)} /></label>
-        <label className="block text-sm">LinkedIn URL (optional)<input disabled={!!busy} type="url" className={inputClass} value={linkedinUrl} onChange={e => setLinkedinUrl(e.target.value)} /></label>
+        <label className="block text-sm">Full name<input disabled={!!busy} className="field" value={fullName} onChange={e => setFullName(e.target.value)} /></label>
+        <label className="block text-sm">Current job title<input disabled={!!busy} className="field" value={jobTitle} onChange={e => setJobTitle(e.target.value)} /></label>
+        <label className="block text-sm">Source URL<input disabled={!!busy} type="url" className="field" value={sourceUrl} onChange={e => setSourceUrl(e.target.value)} /></label>
+        <label className="block text-sm">LinkedIn URL (optional)<input disabled={!!busy} type="url" className="field" value={linkedinUrl} onChange={e => setLinkedinUrl(e.target.value)} /></label>
         <button disabled={busy || !companyId} className="rounded-lg bg-emerald-700 px-4 py-2 text-white disabled:opacity-50" onClick={() => action("contact")}>Save contact candidate</button>
       </section>
       {notice && <Alert tone={feedbackTone}>{notice}</Alert>}

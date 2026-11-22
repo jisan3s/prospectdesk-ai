@@ -3,18 +3,26 @@ import { ArrowRight, Sparkles, Building2, Users, Target, MessageSquare } from "l
 import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, PageHeading } from "@/components/ui/primitives";
 
-type Metric = { label: string; value: string };
-export function DashboardOverview({ metrics, hasError }: { metrics: Metric[]; hasError: boolean }) {
+const metricDetails = {
+  Companies: { icon: Building2, href: "/qualification#companies", description: "Saved to your workspace" },
+  Contacts: { icon: Users, href: "/qualification#decision-makers", description: "Recorded contact candidates" },
+  "Qualified Leads": { icon: Target, href: "/qualification", description: "Latest company score ≥ 70" },
+  "Outreach Drafts": { icon: MessageSquare, href: "/outreach", description: "Drafts awaiting completion" },
+};
+
+export type DashboardMetric = { label: keyof typeof metricDetails; value: string };
+
+export function DashboardOverview({ metrics, hasError }: { metrics: DashboardMetric[]; hasError: boolean }) {
   return (
     <AppShell><main className="workspace space-y-8">
       <PageHeading eyebrow="Your prospecting workspace" title="A little research. A lot of possibility." description="Welcome to ProspectDesk AI. Keep your pipeline moving with focused research, relevant leads, and thoughtful outreach."><Link href="/discover" className="button-primary">Discover companies <ArrowRight size={16} aria-hidden="true"/></Link></PageHeading>
       {hasError && <Alert>Some activity counts could not be loaded. Refresh the page to try again.</Alert>}
       <section aria-label="Prospecting metrics" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {metrics.map(({ label, value }, i) => { const Icon = [Building2, Users, Target, MessageSquare][i]; return (
-          <Link href={["/qualification#companies", "/qualification#decision-makers", "/qualification", "/outreach"][i]} key={label} className="panel group transition-colors hover:border-indigo-300">
+        {metrics.map(({ label, value }) => { const { icon: Icon, href, description } = metricDetails[label]; return (
+          <Link href={href} key={label} className="panel group transition-colors hover:border-indigo-300">
             <div className="flex items-center justify-between"><span className="rounded-xl bg-indigo-50 p-2.5 text-indigo-600"><Icon size={20} aria-hidden="true"/></span><ArrowRight size={16} className="text-slate-400 group-hover:text-indigo-600" aria-hidden="true"/></div>
             <p className="mt-5 text-sm font-medium text-slate-500">{label}</p><p className="mt-1 text-4xl font-semibold tracking-tight text-slate-950">{value}</p>
-            <p className="mt-3 text-xs text-slate-500">{["Saved to your workspace", "Recorded contact candidates", "Latest company score ≥ 70", "Drafts awaiting completion"][i]}</p>
+            <p className="mt-3 text-xs text-slate-500">{description}</p>
           </Link>
         ); })}
       </section>

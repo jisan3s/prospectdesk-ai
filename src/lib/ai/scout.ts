@@ -1,5 +1,5 @@
 import "server-only";
-import OpenAI from "openai";
+import { createScoutClient, scoutModel } from "./client";
 import { zodTextFormat } from "openai/helpers/zod";
 import {
   scoutAnalysisSchema,
@@ -18,16 +18,8 @@ Never provide invented prospect names, roles at particular companies, or social 
 Return structured fields matching the requested schema.`;
 
 export async function analyzeProfile(profile: ProfileInput) {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error("Missing OPENAI_API_KEY");
-  }
-
-  const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-    timeout: 30_000,
-    maxRetries: 0,
-  });
-  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+  const client = createScoutClient(30_000);
+  const model = scoutModel();
 
   const response = await client.responses.parse({
     model,

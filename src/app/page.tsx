@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { AppShell } from "@/components/layout/app-shell";
 import { LoadingSkeleton } from "@/components/ui/primitives";
-import { DashboardOverview } from "@/components/dashboard/overview";
+import { DashboardOverview, type DashboardMetric } from "@/components/dashboard/overview";
 
 // Render the authenticated dashboard for each request.
 async function DashboardContent() {
@@ -87,7 +87,7 @@ async function DashboardContent() {
   }
 
   // 5. Prepare dashboard metrics
-  const metrics = [
+  const metrics: DashboardMetric[] = [
     {
       label: "Companies",
       value: countError ? "—" : String(count ?? 0),
