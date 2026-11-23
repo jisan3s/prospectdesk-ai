@@ -34,7 +34,7 @@ async function DashboardContent() {
     .eq("owner_id", user.id);
 
   if (countError) {
-    console.error("Company count error:", countError.message);
+    console.error("Company count error:", countError.code);
   }
 
   const [
@@ -111,10 +111,10 @@ async function DashboardContent() {
 // 7. Wrap the dashboard in Suspense
 export default function Dashboard() {
   return (
-    <Suspense
-      fallback={<AppShell><LoadingSkeleton label="Loading ProspectDesk AI Dashboard…" /></AppShell>}
+    <AppShell><Suspense
+      fallback={<LoadingSkeleton label="Loading ProspectDesk AI Dashboard…" />}
     >
       <DashboardContent />
-    </Suspense>
+    </Suspense></AppShell>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, EmptyState, PageHeading, LoadingSkeleton } from "@/components/ui/primitives";
 import type { z } from "zod";
 import { companyInputSchema } from "@/lib/validations/discovery";
@@ -92,7 +91,7 @@ export function DiscoverWorkspace() {
   }
 
   return (
-    <AppShell><main className="workspace feature-content">
+    <main className="workspace feature-content">
       <div className="mx-auto max-w-6xl space-y-8">
         <PageHeading eyebrow="Scout / Company research" title="Find your next great client." description="Search for companies, confirm the official website, and build a source-backed research brief with Scout." />
 
@@ -110,7 +109,7 @@ export function DiscoverWorkspace() {
             <Badge>Discovered candidate</Badge><h3 className="mt-3 font-semibold">{hit.title}</h3><p className="mt-1 break-all text-xs text-slate-500">{hit.url}</p>
             <p className="mt-2 text-sm text-slate-600">{hit.snippet}</p>
             <div className="mt-3 flex flex-wrap gap-3 text-sm"><a className="text-indigo-700 underline" href={hit.url} target="_blank" rel="noopener noreferrer">Check source</a>
-              <button className="rounded-lg border px-3 py-1 font-medium" disabled={!!busy} onClick={() => chooseHit(hit)}>Use as candidate</button></div>
+              <button type="button" className="rounded-lg border px-3 py-1 font-medium" disabled={!!busy} onClick={() => chooseHit(hit)}>Use as candidate</button></div>
           </article>)}</div>}
         </form>
 
@@ -146,6 +145,6 @@ export function DiscoverWorkspace() {
         </section>}
         {message && <Alert tone={feedbackTone}>{message}</Alert>}
       </div>
-    </main></AppShell>
+    </main>
   );
 }

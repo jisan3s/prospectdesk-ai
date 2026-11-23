@@ -1,0 +1,561 @@
+{
+  "environment": "local in-memory service double; not Supabase PostgreSQL",
+  "lastScenarioRecordIds": {
+    "profiles": [],
+    "companies": [],
+    "research_sources": [],
+    "contacts": [],
+    "lead_scores": [],
+    "outreach_drafts": [],
+    "agent_runs": []
+  },
+  "createdSyntheticRecords": [
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "44e1c477-ab78-4f24-9b28-0e717fe398c1",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "6c2a706a-e62d-4772-b713-64a2170ff05f",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "1295509c-3195-44da-90dc-42d234997d78",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "a61234c7-e5ac-41ee-aa37-a491c6b2d129",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "ab7a51a4-3a06-4a70-b7f6-95feef29a7c8",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "92f3fbd8-ce85-4413-872b-39179786f53e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "cf3725ff-6c8a-4874-8d64-1ba457ce44d4",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "839bf4e4-6251-4cfe-9ef8-aad97d8058d4",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "d953a936-9a70-4ad1-841b-3f02854619ab",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "f074ed9f-030f-4d6d-9d80-e0bf62c2c45e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "f9b97b42-4cec-4623-a64c-ee17ea391f1e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "eb5d5d6f-1a12-4520-b26b-804b381a06aa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "8d542ecb-2515-444f-9b93-611284c29ab6",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "19bbe752-daee-4fce-a82b-a3ca57c2f869",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "9cc06aa4-60be-48ac-9b8b-bfdb3d5fda7f",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "6ddd15b4-c7f5-48b3-9fe1-317e6231b78e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "f6d17a3c-2a2e-4850-a0bc-0e4194adb783",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "458b207c-fe93-4f88-bac2-744c61ec3a65",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "4a7441a9-a0d1-4abb-a851-fb68c605f940",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "1473efad-56b9-422d-8c0a-d32fdcf908bb",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "abd6de6e-78f1-41de-95c7-c5281948a702",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "928c5b2e-83be-47a0-8185-0aa940f481a0",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "641fdba8-4f2b-4f0e-8b16-844c7c5019b0",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "1c68aca9-1189-4a09-81ac-6d2d9de3efde",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "5ef4b024-570b-4bc2-aedc-007b6416fd1f",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "99a1bcd7-ed83-4a77-8d4e-7e891e5bb1bc",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "cf5a6f4a-acb3-430a-80b6-b969d9551456",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "contacts",
+      "id": "15ea7b64-92fa-47cb-bd23-c3063a89e878",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "53c70cc1-a5f2-4f2b-a9b0-59d63f0e7916",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "38c5c6c4-1e78-43db-b377-0225e1905d9b",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "8b222840-2f5a-4146-87a7-88edd4f609ef",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "f16ac510-954b-465f-af90-4d27aad38b7b",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "79db0ffb-b07c-4e5c-b3eb-e587c1ca035e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "270f92ed-9aab-4165-9c05-0f71a1f74296",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "1ecab837-c94e-4b66-a9dd-4afddd1d16c3",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "79014c55-645d-4110-b802-35c3b85c06b3",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "10c75e29-d6ab-4d77-9398-8d24f916de06",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "contacts",
+      "id": "c02bd47f-7259-4a89-a171-900b5cf4729f",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "5cdb70d1-d43b-45cd-b047-fb746bc053c2",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "9ea871cd-9f9f-4585-8ecf-3edda7b5e7af",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "e909a484-e536-4a37-ac90-b7a24be996f5",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "cf5e8361-86e6-474f-a9a6-6a8da7fc4526",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "bfde6f39-cde8-404c-a3a6-5b9d9101ad70",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "3b5e5b0d-af6c-4c6a-96d8-4e0aab8918c2",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "0a2eb11c-27ef-4efb-9384-63e1ed57b303",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "6cd56f28-9f1c-4185-a2c4-9f9afbb9cf1e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "ee414d63-1eca-44a1-8480-7091b6cf80ec",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "0e291a5d-6ccc-4837-a359-4e1b35fb30a4",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "542f872c-7f44-4c1e-9507-ef49f43b247b",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "1017b11f-73d8-4394-8adc-b8267414ed5b",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "contacts",
+      "id": "23d87a8a-459b-42b7-98d9-b987d370a81f",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "b7bccfbe-9a6d-42e3-ac4c-6542abe69c38",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "feff1379-1de9-4406-a8a9-7910c421d862",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "173b53a7-0146-41b1-a37b-9af2a3a6aed2",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "a5fc79a3-7d46-49be-ae8a-ff3ef74cc2d2",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "5ea4e18e-6ff2-474e-8d0f-5112926ddda9",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "2679d10f-8298-4f32-93f9-42f58f84260e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "da5f9113-c200-4820-ba9c-6d4b6d450c40",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "a62357dc-f15e-4e4c-bab8-5f6125ded0d1",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "85eaaa9a-af56-4d4d-bf19-dfc2cfba0bb4",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "06c44730-c9b6-4355-89c6-3e413ed78654",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "9e968d09-cd94-450d-8c47-6a076c0bed0c",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "8eddc488-d5ae-496d-879a-cea453dd105e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "83b20b6e-4546-48a5-baab-0ad9be227a73",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "fed048a1-d009-4cca-a6d2-c045eea3e4aa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "6afd441e-c9b5-49be-9f3b-bcbd1d2a3b7e",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "6f81e49f-491c-4218-b0c9-38d895013a31",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "ec863edf-c155-44c0-b8a1-37e44f6ad625",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "988216e4-b3e8-408e-9a89-6b134bcbda93",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "3529c347-7222-463a-9fed-3a270dab92da",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "ecc8f9b3-ff1b-47c6-93a3-df52ba66c7d3",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "d4724394-7daf-459f-a209-77d1aae62e18",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "22cf1c56-08d3-4c66-bcc0-4f9bd134c523",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "ee8d93d0-65ea-4eda-b977-7a3d2c91c454",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "cbf0b531-fc57-47a7-8905-86c890b0d171",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "32b1fc32-a4a6-44b3-8caa-52edf71ead2f",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "9bc37cff-f529-4f77-94f1-f60fccde1fcc",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "6a5186aa-93a9-44fa-b891-f98e06ebb2df",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "064e4d29-8fe5-47cd-b3f1-e90f894e79e0",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "a087ba9d-fc29-4c66-9a46-7e5cf7068101",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "8000a2d0-a4dc-43e6-9b75-e85f6c36457b",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "profiles",
+      "id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "130d3fa3-f1d0-4470-a6b5-804a3d0910ea",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "3c6b7a17-c2ad-4332-9d05-f13fca21f318",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "companies",
+      "id": "e77027b1-c376-4ee8-a6a1-9dbfd2100b70",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "outreach_drafts",
+      "id": "30b13ae6-0ede-44ba-a768-2d794d7892c8",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "19f549ba-b0fc-42c3-b7b1-441f2d800a66",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "agent_runs",
+      "id": "651bb81c-440d-49e4-8d1a-59cf16042217",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    },
+    {
+      "table": "lead_scores",
+      "id": "e607898b-dbc8-44ca-b491-920aa81277d3",
+      "owner_id": "019abbaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa"
+    }
+  ],
+  "liveRecordsCreatedByThisRun": 0,
+  "note": "All isolated records cease to exist when this process stops; no real database was mutated."
+}

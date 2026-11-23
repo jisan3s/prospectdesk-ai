@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, EmptyState, PageHeading } from "@/components/ui/primitives";
 import type { Qualification } from "@/lib/validations/qualification";
 
@@ -46,13 +45,13 @@ export function QualificationWorkspace({ companies }: { companies: Company[] }) 
     finally { setBusy(false); }
   }
 
-  return <AppShell><main className="workspace feature-content">
+  return <main className="workspace feature-content">
     <div className="mx-auto max-w-6xl space-y-6">
       <PageHeading eyebrow="Scout / Lead intelligence" title="Turn evidence into opportunity." description="Evaluate saved companies, explore buyer roles, and record contact candidates with supporting sources." />
       {!companies.length && <EmptyState title="Your prospect list starts here"><Link href="/discover" className="font-medium text-indigo-700 underline">Discover and research a company</Link> before scoring leads or finding decision-makers.</EmptyState>}
       <section id="companies" className="space-y-4 panel">
         <h2 className="text-lg font-semibold">1. Choose a company</h2>
-        <select disabled={!!busy} aria-label="Company" className="field" value={companyId} onChange={event => { setCompanyId(event.target.value); setAssessment(null); setSources([]); setHits([]); }}>
+        <select disabled={!!busy} aria-label="Company" className="field" value={companyId} onChange={event => { setCompanyId(event.target.value); setAssessment(null); setSources([]); setHits([]); setFullName(""); setJobTitle(""); setSourceUrl(""); setLinkedinUrl(""); setNotice(""); setFeedbackTone("info"); }}>
           {companies.map(c => <option key={c.id} value={c.id}>{c.name} — {c.website}</option>)}
         </select>
         <button disabled={busy || !companyId} className="button-primary" onClick={() => action("score")}>Score company with Scout</button>
@@ -85,5 +84,5 @@ export function QualificationWorkspace({ companies }: { companies: Company[] }) 
       </section>
       {notice && <Alert tone={feedbackTone}>{notice}</Alert>}
     </div>
-  </main></AppShell>;
+  </main>;
 }

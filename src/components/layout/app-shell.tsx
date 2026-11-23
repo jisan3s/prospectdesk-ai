@@ -25,10 +25,10 @@ export function AppShell({ children }: { children: ReactNode }) {
     <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:p-3">Skip to content</a>
     <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col border-r border-slate-200 bg-white px-5 py-7 lg:flex">
       <Link href="/" aria-label="ProspectDesk AI dashboard"><Brand /></Link>
-      <p className="mb-4 mt-10 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">Workspace</p>
+      <p className="mb-4 mt-10 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Workspace</p>
       {links()}
       <div className="mt-auto rounded-xl border border-teal-100 bg-teal-50/60 p-4"><Sparkles className="mb-3 text-teal-700" size={20} aria-hidden="true"/><p className="text-sm font-semibold text-slate-900">Meet Scout</p><p className="mt-2 text-xs leading-5 text-slate-600">Your research partner, from the first company to a thoughtful conversation.</p><Link href="/profile" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-teal-800">Refine your profile <ArrowUpRight size={14}/></Link></div>
-      <p className="mt-5 px-1 text-[11px] text-slate-400">Thoughtful research. Personal outreach.</p>
+      <p className="mt-5 px-1 text-[11px] text-slate-500">Thoughtful research. Personal outreach.</p>
     </aside>
     <div className="min-w-0 lg:pl-64">
       <header className="flex min-h-18 items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 sm:px-8">

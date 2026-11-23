@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, EmptyState, PageHeading } from "@/components/ui/primitives";
 import { useEffect, useState } from "react";
 
@@ -61,6 +60,7 @@ export function OutreachStudio({ companies, contacts }: { companies: Company[]; 
   }
 
   async function generate() {
+    if (edited && !window.confirm("Discard unsaved changes and generate a new draft?")) return;
     setBusy(true); setNotice(""); setFeedbackTone("info");
     try {
       const data = await requestJson("/api/outreach/generate", generatedDraftResponseSchema, {
@@ -97,7 +97,7 @@ export function OutreachStudio({ companies, contacts }: { companies: Company[]; 
     finally { setBusy(false); }
   }
 
-  return <AppShell><main className="workspace feature-content">
+  return <main className="workspace feature-content">
     <div className="mx-auto max-w-6xl space-y-6">
       <PageHeading eyebrow="Scout / Outreach Studio" title="Better conversations start here." description="A focused workspace to draft, refine, and review personal outreach. Every message stays in your hands." ><Badge tone="scout">Human approval required</Badge></PageHeading>
       {!companies.length && <EmptyState title="Build your research context first"><Link className="font-medium text-indigo-700 underline" href="/discover">Discover a company</Link>, save its research, and return here to create a grounded draft.</EmptyState>}
@@ -117,7 +117,11 @@ export function OutreachStudio({ companies, contacts }: { companies: Company[]; 
 
       <section className="grid items-start gap-5 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)]">
         <div className="panel min-w-0 xl:sticky xl:top-6"><h2 className="mb-3 font-semibold">2. Saved outreach</h2><div className="space-y-2">
-          {drafts.map(d => <button key={d.id} disabled={busy} aria-pressed={d.id === selected} onClick={() => pick(d)} className={`w-full rounded-lg border p-3 text-left text-sm ${d.id === selected ? "border-indigo-600 bg-indigo-50" : "bg-white"}`}>
+          {drafts.map(d => <button key={d.id} disabled={busy} aria-pressed={d.id === selected} onClick={() => {
+            if (d.id === selected) return;
+            if (edited && !window.confirm("Discard unsaved changes and open another draft?")) return;
+            pick(d);
+          }} className={`w-full rounded-lg border p-3 text-left text-sm ${d.id === selected ? "border-indigo-600 bg-indigo-50" : "bg-white"}`}>
             <strong>{companies.find(c => c.id === d.company_id)?.name ?? "Company"}</strong><span className="ml-2 text-slate-500">{d.channel}</span>
             <div className="mt-2 flex flex-wrap gap-2"><Badge tone={d.status === "approved" || d.status === "manually_sent" ? "success" : d.status === "rejected" ? "warning" : "neutral"}>{d.status.replaceAll("_", " ")}</Badge><span className="py-1 text-xs text-slate-500">{d.message_type.replaceAll("_", " ")}</span></div><p className="mt-2 text-xs text-slate-500">Created {new Date(d.created_at).toLocaleDateString("en-US", { timeZone: "UTC", month: "short", day: "numeric", year: "numeric" })}</p>
           </button>)}
@@ -144,5 +148,5 @@ export function OutreachStudio({ companies, contacts }: { companies: Company[]; 
       </section>
       {notice && <Alert tone={feedbackTone}>{notice}</Alert>}
     </div>
-  </main></AppShell>;
+  </main>;
 }

@@ -21,7 +21,7 @@ async function ProfileContent() {
     .maybeSingle();
 
   if (profileError) {
-    return <AppShell><main className="workspace"><Alert>Unable to load your profile. Refresh the page to try again.</Alert></main></AppShell>;
+    return <main className="workspace"><Alert>Unable to load your profile. Refresh the page to try again.</Alert></main>;
   }
 
   const previous = scoutAnalysisSchema.safeParse(profile?.scout_analysis);
@@ -45,8 +45,8 @@ async function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Suspense fallback={<AppShell><LoadingSkeleton label="Loading your profile..." /></AppShell>}>
+    <AppShell><Suspense fallback={<LoadingSkeleton label="Loading your profile..." />}>
       <ProfileContent />
-    </Suspense>
+    </Suspense></AppShell>
   );
 }

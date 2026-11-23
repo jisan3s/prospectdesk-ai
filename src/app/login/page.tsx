@@ -1,10 +1,17 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState, type FormEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Brand, Alert } from "@/components/ui/primitives";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+
+function ConfirmationNotice() {
+  const searchParams = useSearchParams();
+  return searchParams.get("error") === "confirmation_failed"
+    ? <Alert tone="error">The email confirmation link is invalid or expired. Open the latest confirmation email or try signing in.</Alert>
+    : null;
+}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -75,6 +82,8 @@ export default function LoginPage() {
               : "Create your workspace account"}
           </p>
         </div>
+
+        <Suspense fallback={null}><ConfirmationNotice /></Suspense>
 
         <label className="block text-sm text-slate-700">
           Email

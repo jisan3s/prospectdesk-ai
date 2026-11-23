@@ -1,0 +1,202 @@
+{
+  "config": {
+    "argv": [
+      "/Users/envytheme/.nvm/versions/node/v24.18.0/bin/node",
+      "/Users/envytheme/Practice Projects/prospectdesk-ai/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.final.config.ts",
+      "--grep",
+      "provider diagnostics"
+    ],
+    "configFile": "/Users/envytheme/Practice Projects/prospectdesk-ai/playwright.final.config.ts",
+    "rootDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "snapshotDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:3000",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium",
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "artifacts/final/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.65.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "api.spec.ts",
+      "file": "api.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "provider diagnostics stay out of API responses and application logs",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1972,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"E2E_PRIVATE_PROVIDER_DIAGNOSTIC\"\u001b[39m\nReceived string:        \u001b[31m\"Lead scoring failed 503 \u001b[7mE2E_PRIVATE_PROVIDER_DIAGNOSTIC\u001b[27m\u001b[39m\n\u001b[31m POST /api/qualification/score 502 in 121ms (next.js: 96ms, proxy.ts: 4ms, application-code: 21ms)\u001b[39m\n\u001b[31m\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"E2E_PRIVATE_PROVIDER_DIAGNOSTIC\"\u001b[39m\nReceived string:        \u001b[31m\"Lead scoring failed 503 \u001b[7mE2E_PRIVATE_PROVIDER_DIAGNOSTIC\u001b[27m\u001b[39m\n\u001b[31m POST /api/qualification/score 502 in 121ms (next.js: 96ms, proxy.ts: 4ms, application-code: 21ms)\u001b[39m\n\u001b[31m\"\u001b[39m\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/api.spec.ts:148:88",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/api.spec.ts",
+                      "column": 88,
+                      "line": 148
+                    },
+                    "snippet": " \u001b[90m 146 |\u001b[39m   expect(response\u001b[33m.\u001b[39mstatus())\u001b[33m.\u001b[39mtoBe(\u001b[35m502\u001b[39m)\u001b[33m;\u001b[39m expect(\u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mtext())\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoContain(marker)\u001b[33m;\u001b[39m\n \u001b[90m 147 |\u001b[39m   \u001b[36mawait\u001b[39m expect\u001b[33m.\u001b[39mpoll(() \u001b[33m=>\u001b[39m fs\u001b[33m.\u001b[39mreadFileSync(\u001b[32m\"artifacts/final/development.log\"\u001b[39m\u001b[33m,\u001b[39m \u001b[32m\"utf8\"\u001b[39m)\u001b[33m.\u001b[39mslice(offset))\u001b[33m.\u001b[39mtoContain(\u001b[32m\"Lead scoring failed\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 148 |\u001b[39m   expect(fs\u001b[33m.\u001b[39mreadFileSync(\u001b[32m\"artifacts/final/development.log\"\u001b[39m\u001b[33m,\u001b[39m \u001b[32m\"utf8\"\u001b[39m)\u001b[33m.\u001b[39mslice(offset))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoContain(marker)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 149 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 150 |\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/api.spec.ts",
+                        "column": 88,
+                        "line": 148
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"E2E_PRIVATE_PROVIDER_DIAGNOSTIC\"\u001b[39m\nReceived string:        \u001b[31m\"Lead scoring failed 503 \u001b[7mE2E_PRIVATE_PROVIDER_DIAGNOSTIC\u001b[27m\u001b[39m\n\u001b[31m POST /api/qualification/score 502 in 121ms (next.js: 96ms, proxy.ts: 4ms, application-code: 21ms)\u001b[39m\n\u001b[31m\"\u001b[39m\n\n  146 |   expect(response.status()).toBe(502); expect(await response.text()).not.toContain(marker);\n  147 |   await expect.poll(() => fs.readFileSync(\"artifacts/final/development.log\", \"utf8\").slice(offset)).toContain(\"Lead scoring failed\");\n> 148 |   expect(fs.readFileSync(\"artifacts/final/development.log\", \"utf8\").slice(offset)).not.toContain(marker);\n      |                                                                                        ^\n  149 | });\n  150 |\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/api.spec.ts:148:88"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T06:04:46.653Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/api-provider-diagnostics-s-7bc65-ponses-and-application-logs/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/api-provider-diagnostics-s-7bc65-ponses-and-application-logs/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/api-provider-diagnostics-s-7bc65-ponses-and-application-logs/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/api.spec.ts",
+                    "column": 88,
+                    "line": 148
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-9fcab958159f4c3e809d",
+          "file": "api.spec.ts",
+          "line": 140,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-23T06:04:46.198Z",
+    "duration": 3341.917,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

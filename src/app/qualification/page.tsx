@@ -13,10 +13,10 @@ async function Content() {
   if (error || !user) redirect("/login");
   const { data: companies, error: queryError } = await supabase.from("companies")
     .select("id, name, website").eq("owner_id", user.id).order("created_at", { ascending: false }).limit(100);
-  if (queryError) return <AppShell><main className="workspace"><Alert>Unable to load companies. Refresh the page to try again.</Alert></main></AppShell>;
+  if (queryError) return <main className="workspace"><Alert>Unable to load companies. Refresh the page to try again.</Alert></main>;
   return <QualificationWorkspace companies={companies ?? []} />;
 }
 
 export default function QualificationPage() {
-  return <Suspense fallback={<AppShell><LoadingSkeleton label="Loading qualification..." /></AppShell>}><Content /></Suspense>;
+  return <AppShell><Suspense fallback={<LoadingSkeleton label="Loading qualification..." />}><Content /></Suspense></AppShell>;
 }
