@@ -15,5 +15,5 @@ async function DiscoverContent() {
 }
 
 export default function DiscoverPage() {
-  return <Suspense fallback={<AppShell><LoadingSkeleton label="Loading company discovery..." /></AppShell>}><DiscoverContent /></Suspense>;
+  return <AppShell><Suspense fallback={<LoadingSkeleton label="Loading company discovery..." />}><DiscoverContent /></Suspense></AppShell>;
 }

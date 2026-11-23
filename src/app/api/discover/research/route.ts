@@ -1,3 +1,4 @@
+import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -7,7 +8,7 @@ import { searchWeb } from "@/lib/research/tavily";
 import { analyzeCompany } from "@/lib/ai/company-research";
 
 export async function POST(request: Request) {
-  if (request.headers.get("origin") && request.headers.get("origin") !== new URL(request.url).origin)
+  if (!hasSameOrigin(request))
     return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
   const supabase = await createClient();
   const { data: { user }, error } = await supabase.auth.getUser();

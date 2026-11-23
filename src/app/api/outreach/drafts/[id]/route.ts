@@ -1,3 +1,4 @@
+import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
@@ -6,8 +7,7 @@ import { editOutreachInput, nextStatus, transitionInput, validLength } from "@/l
 type Params = { params: Promise<{ id: string }> };
 
 export async function PATCH(request: Request, { params }: Params) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+  if (!hasSameOrigin(request)) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) return NextResponse.json({ error: "Invalid draft ID" }, { status: 400 });
   const supabase = await createClient();
@@ -16,7 +16,8 @@ export async function PATCH(request: Request, { params }: Params) {
   const { data: existing, error: readError } = await supabase.from("outreach_drafts")
     .select("id, owner_id, status, channel, message_type, revision")
     .eq("id", id).eq("owner_id", user.id).maybeSingle();
-  if (readError || !existing) return NextResponse.json({ error: "Draft not found" }, { status: 404 });
+  if (readError) return NextResponse.json({ error: "Unable to load draft" }, { status: 500 });
+  if (!existing) return NextResponse.json({ error: "Draft not found" }, { status: 404 });
   const input = await request.json().catch(() => null);
 
   if (request.headers.get("x-outreach-action") === "edit") {

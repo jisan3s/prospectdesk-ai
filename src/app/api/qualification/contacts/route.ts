@@ -1,16 +1,17 @@
+import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { verifiedContactInput } from "@/lib/validations/qualification";
 
 export async function POST(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+  if (!hasSameOrigin(request)) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
   const supabase = await createClient();
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const input = verifiedContactInput.safeParse(await request.json().catch(() => null));
   if (!input.success) return NextResponse.json({ error: "Invalid contact fields" }, { status: 400 });
-  const { data: company } = await supabase.from("companies").select("id").eq("id", input.data.companyId).eq("owner_id", user.id).maybeSingle();
+  const { data: company, error: companyError } = await supabase.from("companies").select("id").eq("id", input.data.companyId).eq("owner_id", user.id).maybeSingle();
+  if (companyError) return NextResponse.json({ error: "Unable to load company" }, { status: 500 });
   if (!company) return NextResponse.json({ error: "Company not found" }, { status: 404 });
   const { data, error: dbError } = await supabase.from("contacts").insert({
     owner_id: user.id, company_id: company.id, full_name: input.data.fullName,

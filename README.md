@@ -217,7 +217,10 @@ prospectdesk-ai/
 ├── next.config.ts                     # Cache Components, partial prefetching, Tailwind loader
 ├── tsconfig.json                      # Strict TypeScript and @/* source alias
 ├── eslint.config.mjs
-├── playwright.stage7.config.ts         # Existing browser-test configuration
+├── playwright.stage7.config.ts         # Signed-out browser-test configuration
+├── playwright.final.config.ts          # Isolated full-application browser suite
+├── vitest.config.mts                   # Unit/evaluation test discovery and source aliases
+├── FINAL_TEST_REPORT.md                # Final browser/API review, fixes, and limitations
 ├── src/
 │   ├── proxy.ts                       # Supabase session refresh entry point
 │   ├── app/
@@ -252,9 +255,11 @@ prospectdesk-ai/
 │   ├── evals/                         # Offline output-contract and safety smoke tests
 │   ├── integration/                   # Opt-in two-user Supabase RLS test
 │   ├── e2e/                           # Signed-out API/auth and responsive login checks
-│   └── fixtures/ui-preview.tsx         # Synthetic feature-workspace fixture
+│   ├── final/                         # Actual-page/API journeys against local service doubles
+│   └── fixtures/                      # UI fixtures and isolated local provider/data doubles
 ├── scripts/
 │   ├── verify-ui.mjs                   # Local mocked browser workflows and screenshots
+│   ├── run-final-review.mjs            # Start isolated services/app, test, and stop owned processes
 │   └── run-live-evals.ts               # Opt-in live OpenAI smoke evaluation
 ├── artifacts/ui/                      # Existing screenshots and fixture result summary
 └── docs/ui-modernization.md            # Design-system and UI verification report
@@ -400,10 +405,10 @@ There is no npm `test` or `typecheck` script. Use the direct commands below inst
 ```bash
 npm run lint
 npx tsc --noEmit
-RUN_RLS_TESTS=0 npx vitest run --exclude 'tests/e2e/**'
+RUN_RLS_TESTS=0 npx vitest run
 ```
 
-The Vitest command excludes Playwright files and explicitly disables the live RLS suite. It covers:
+The Vitest configuration discovers `.test.ts` files separately from Playwright `.spec.ts` files; the command explicitly disables the live RLS suite. It covers:
 
 - Profile, company/discovery, contact/qualification, and outreach input/output schemas.
 - URL normalization and same-domain source matching.
@@ -449,6 +454,18 @@ UI_TEST_BASE_URL=http://127.0.0.1:3001 UI_ARTIFACT_DIR=/tmp/prospectdesk-ui-chec
 ```
 
 Start that server separately with `npm run dev -- --hostname 127.0.0.1 --port 3001`. The optional `UI_TEST_BASE_URL` must use a loopback host; `UI_ARTIFACT_DIR` selects the output directory. The script refuses to overwrite an existing preview directory and removes its temporary route on normal completion or caught failure. Run it only locally with a development server, not against a deployed application. These checks validate UI behavior under mocks; they do not prove that quota RPCs, provider failures, database policies, or live writes behave correctly.
+
+### Isolated application end-to-end review
+
+With ports 3000 and 54329 free, run:
+
+```bash
+node scripts/run-final-review.mjs
+```
+
+The runner starts the actual Next.js development application and local in-memory Auth/PostgREST/RPC/OpenAI/Tavily service doubles, using synthetic process-level credentials. It runs `playwright.final.config.ts`, then stops only the processes it started. It refuses to replace an existing server and does not edit `.env.local` or write to the configured Supabase project. Provider traffic is redirected locally or blocked.
+
+The tests visit the real application URLs and Route Handlers, covering authenticated UI workflows, reload persistence in the service double, metrics, authorization/error paths, and four viewport sizes. Results and screenshots are saved under `artifacts/final/`. These tests exercise more than intercepted component responses, but **do not verify deployed PostgreSQL RLS, quota SQL, triggers, or live model quality**. See [FINAL_TEST_REPORT.md](FINAL_TEST_REPORT.md) for the evidence and remaining readiness requirements.
 
 ### Live RLS isolation test
 
@@ -510,7 +527,7 @@ Both guard checks intentionally exit with status 1 and a configuration message. 
 
 - **Authentication and ownership:** protected pages and data APIs verify the user through Supabase; records are selected/changed using explicit ownership filters. User IDs for writes are assigned from the authenticated session rather than trusted from form input.
 - **Server credentials:** OpenAI and Tavily modules use `server-only`; secret provider keys have no `NEXT_PUBLIC_` prefix.
-- **Request validation:** Zod validates feature payloads and AI structures. Most feature writes reject a mismatched supplied `Origin`. Coverage varies; the basic company-creation API does not use the shared origin/body guard.
+- **Request validation:** Zod validates feature payloads and AI structures. Data API writes reject a mismatched supplied `Origin` using the incoming request authority. Body-limit coverage varies; the basic company-creation API does not use the bounded JSON reader.
 - **Outreach request hardening:** `/api/outreach/generate` applies origin and JSON content-type checks, a declared-size precheck, and a streaming 16,000-byte JSON reader. It authenticates before quota RPC calls.
 - **Usage safeguards:** expensive operations call their daily quota RPCs before provider requests. Outreach generation additionally calls `claim_api_hourly_limit`; the other five costly actions do not currently call that shared hourly helper.
 - **Provider limits:** OpenAI calls disable SDK retries, have 25–30 second timeouts, and bound output tokens. Tavily uses a 12-second timeout, basic search, no raw content/images/answer, and at most eight results, with bounded returned fields.

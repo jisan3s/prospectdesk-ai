@@ -1,0 +1,558 @@
+{
+  "config": {
+    "argv": [
+      "/Users/envytheme/.nvm/versions/node/v24.18.0/bin/node",
+      "/Users/envytheme/Practice Projects/prospectdesk-ai/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.final.config.ts",
+      "--grep",
+      "contrast|confirmation|database failure|foreign browser|unsaved"
+    ],
+    "configFile": "/Users/envytheme/Practice Projects/prospectdesk-ai/playwright.final.config.ts",
+    "rootDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "snapshotDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:3000",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium",
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "artifacts/final/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.65.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "api.spec.ts",
+      "file": "api.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "basic company creation rejects a foreign browser origin",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1338,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:56:36.590Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-2d2673224e677d41fb33",
+          "file": "api.spec.ts",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "database failure is not misreported as a missing decision-makers record",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8112,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:56:38.430Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-0ef4224a5d410af27ccf",
+          "file": "api.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "database failure is not misreported as a missing contacts record",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8164,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:56:46.549Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-c54a03de18a0ef7f65eb",
+          "file": "api.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "database failure is not misreported as a missing draft record",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8764,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:56:54.721Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-2af43a14f61899de839e",
+          "file": "api.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "outreach quotas fail closed, transitions require approval/confirmation, and stale edits are rejected",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1332,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:57:03.495Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-ceb08c04721f4a453e43",
+          "file": "api.spec.ts",
+          "line": 85,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "journeys.spec.ts",
+      "file": "journeys.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "invalid confirmation links show actionable authentication feedback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 506,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:57:04.843Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-8c0a8a471be4c41f8532",
+          "file": "journeys.spec.ts",
+          "line": 139,
+          "column": 1
+        },
+        {
+          "title": "clicking the current draft preserves unsaved work",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1615,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:57:05.355Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-d9e2af896700908e3c88",
+          "file": "journeys.spec.ts",
+          "line": 191,
+          "column": 1
+        },
+        {
+          "title": "canceling generation or selecting another draft preserves unsaved edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1375,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:57:06.976Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-6bf18029ae5b8607e074",
+          "file": "journeys.spec.ts",
+          "line": 236,
+          "column": 1
+        },
+        {
+          "title": "confirmation redirects preserve the incoming browser host",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 81,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:57:08.357Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-ce2493c7532444bfcc5b",
+          "file": "journeys.spec.ts",
+          "line": 250,
+          "column": 1
+        },
+        {
+          "title": "successful synthetic email confirmation establishes a session on the original host",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 849,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:57:08.443Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-368b7b878925a35924b3",
+          "file": "journeys.spec.ts",
+          "line": 255,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "responsive.spec.ts",
+      "file": "responsive.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop sidebar helper text has readable contrast",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 841,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m4.5\u001b[39m\nReceived:    \u001b[31m2.6301410763976873\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m4.5\u001b[39m\nReceived:    \u001b[31m2.6301410763976873\u001b[39m\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/responsive.spec.ts:85:20",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/responsive.spec.ts",
+                      "column": 20,
+                      "line": 85
+                    },
+                    "snippet": " \u001b[90m 83 |\u001b[39m     \u001b[36mreturn\u001b[39m (\u001b[33mMath\u001b[39m\u001b[33m.\u001b[39mmax(fg\u001b[33m,\u001b[39m bg) \u001b[33m+\u001b[39m \u001b[35m0.05\u001b[39m) \u001b[33m/\u001b[39m (\u001b[33mMath\u001b[39m\u001b[33m.\u001b[39mmin(fg\u001b[33m,\u001b[39m bg) \u001b[33m+\u001b[39m \u001b[35m0.05\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 84 |\u001b[39m   })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 85 |\u001b[39m   expect(contrast)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m4.5\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 86 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 87 |\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/responsive.spec.ts",
+                        "column": 20,
+                        "line": 85
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m4.5\u001b[39m\nReceived:    \u001b[31m2.6301410763976873\u001b[39m\n\n  83 |     return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);\n  84 |   });\n> 85 |   expect(contrast).toBeGreaterThanOrEqual(4.5);\n     |                    ^\n  86 | });\n  87 |\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/responsive.spec.ts:85:20"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:57:09.306Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/responsive-desktop-sidebar-helper-text-has-readable-contrast/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/responsive-desktop-sidebar-helper-text-has-readable-contrast/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/responsive-desktop-sidebar-helper-text-has-readable-contrast/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/responsive.spec.ts",
+                    "column": 20,
+                    "line": 85
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-13b29fb1ccac089c6727",
+          "file": "responsive.spec.ts",
+          "line": 69,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-23T05:56:36.255Z",
+    "duration": 34042.249,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

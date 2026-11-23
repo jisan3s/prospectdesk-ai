@@ -1,3 +1,4 @@
+import { hasSameOrigin } from "@/lib/security/same-origin";
 import "server-only";
 import { NextResponse } from "next/server";
 import type { createClient } from "@/lib/supabase/server";
@@ -7,8 +8,7 @@ export type CostlyAction = "profile_analyze" | "company_search" | "company_resea
   "lead_score" | "decision_search" | "outreach_generate";
 
 export function validateWriteRequest(request: Request, maxBytes = 16_000): NextResponse | null {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin)
+  if (!hasSameOrigin(request))
     return NextResponse.json({ error: "Invalid request origin" }, { status: 403 });
   const contentType = request.headers.get("content-type") || "";
   if (!contentType.toLowerCase().startsWith("application/json"))

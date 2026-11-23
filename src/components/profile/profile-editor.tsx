@@ -8,7 +8,6 @@ import {
 } from "@/lib/validations/profile";
 import { postJson, requestJson } from "@/lib/http/client";
 import { profileSavedSchema, profileAnalysisResponseSchema } from "@/lib/validations/responses";
-import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, EmptyState, PageHeading } from "@/components/ui/primitives";
 
 type Props = {
@@ -87,7 +86,7 @@ export function ProfileEditor({ initial, initialAnalysis, lastAnalyzedAt }: Prop
   }
 
   return (
-    <AppShell><main className="workspace feature-content">
+    <main className="workspace feature-content">
       <div className="mx-auto max-w-6xl space-y-8">
         <PageHeading eyebrow="Scout / Profile intelligence" title="Your expertise. A clearer direction." description="Build your professional profile so Scout can find relevant companies and shape more personal outreach." />
         <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
@@ -151,7 +150,7 @@ export function ProfileEditor({ initial, initialAnalysis, lastAnalyzedAt }: Prop
         {!analysis && <section className="panel"><Badge tone="scout">Scout insights</Badge><div className="mt-5"><EmptyState title="A fresh perspective on your expertise">Save your profile, then run Scout to see supported strengths, potential clients, and recommendations.</EmptyState></div>{busy === "analyze" && <p role="status" className="mt-4 text-sm text-teal-700">Scout is reviewing your saved profile…</p>}</section>}
         </div>
       </div>
-    </main></AppShell>
+    </main>
   );
 }
 

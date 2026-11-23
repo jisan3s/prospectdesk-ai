@@ -1,11 +1,11 @@
+import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { qualifyCompany } from "@/lib/ai/qualify";
 import { qualificationRequest } from "@/lib/validations/qualification";
 
 export async function POST(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+  if (!hasSameOrigin(request)) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   const sources = (sourceResponse.data ?? []).map(s => ({ id: s.id, url: s.source_url, finding: s.finding }));
   if (!sources.length) return NextResponse.json({ error: "Research this company in Stage 4 before scoring" }, { status: 400 });
   const { data: allowed, error: quotaError } = await supabase.rpc("claim_qualification_usage", { p_action: "score" });
-  if (quotaError) { console.error("Qualification quota error", quotaError.code, quotaError.message); return NextResponse.json({ error: "Quota function unavailable; check Stage 5 migration" }, { status: 503 }); }
+  if (quotaError) { console.error("Qualification quota error", quotaError.code); return NextResponse.json({ error: "Quota function unavailable; check Stage 5 migration" }, { status: 503 }); }
   if (!allowed) return NextResponse.json({ error: "Daily limit: five qualification attempts" }, { status: 429 });
 
   const { data: run } = await supabase.from("agent_runs").insert({ owner_id: user.id, task_type: "lead_scoring", status: "running", started_at: new Date().toISOString() }).select("id").single();
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     if (run) await supabase.from("agent_runs").update({ status: "completed", completed_at: new Date().toISOString() }).eq("id", run.id).eq("owner_id", user.id);
     return NextResponse.json({ assessment, sources: evidence, saved }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    console.error("Lead scoring failed", error instanceof Error ? error.message : "unknown");
+    console.error("Lead scoring failed", error instanceof Error ? error.name : "unknown");
     if (run) await supabase.from("agent_runs").update({ status: "failed", completed_at: new Date().toISOString(), error_message: "Scoring failed" }).eq("id", run.id).eq("owner_id", user.id);
     return NextResponse.json({ error: "Unable to score company; check model access and logs" }, { status: 502 });
   }

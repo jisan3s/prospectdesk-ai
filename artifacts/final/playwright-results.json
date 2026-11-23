@@ -1,0 +1,1308 @@
+{
+  "config": {
+    "argv": [
+      "/Users/envytheme/.nvm/versions/node/v24.18.0/bin/node",
+      "/Users/envytheme/Practice Projects/prospectdesk-ai/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.final.config.ts"
+    ],
+    "configFile": "/Users/envytheme/Practice Projects/prospectdesk-ai/playwright.final.config.ts",
+    "rootDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "snapshotDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:3000",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium",
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "artifacts/final/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.65.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "api.spec.ts",
+      "file": "api.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "every inventoried API method rejects signed-out callers, and unsupported PUT methods return 405",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3891,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:24.944Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-163ef17c2853dab8d078",
+          "file": "api.spec.ts",
+          "line": 37,
+          "column": 1
+        },
+        {
+          "title": "invalid payloads, forged ownership, invalid evidence, and request guards do not write records",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1534,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:29.579Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-be0e63f8926fdf61bda5",
+          "file": "api.spec.ts",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "basic company creation rejects a foreign browser origin",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 679,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:31.125Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-2d2673224e677d41fb33",
+          "file": "api.spec.ts",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "database failure is not misreported as a missing decision-makers record",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7796,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:31.812Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-0ef4224a5d410af27ccf",
+          "file": "api.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "database failure is not misreported as a missing contacts record",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8221,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:39.617Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-c54a03de18a0ef7f65eb",
+          "file": "api.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "database failure is not misreported as a missing draft record",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8788,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:47.846Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-2af43a14f61899de839e",
+          "file": "api.spec.ts",
+          "line": 70,
+          "column": 3
+        },
+        {
+          "title": "outreach quotas fail closed, transitions require approval/confirmation, and stale edits are rejected",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1164,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:56.643Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-ceb08c04721f4a453e43",
+          "file": "api.spec.ts",
+          "line": 85,
+          "column": 1
+        },
+        {
+          "title": "cross-user company/draft ownership and expired-session protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7190,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:07:57.817Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-cc594d53bfc19a180004",
+          "file": "api.spec.ts",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "empty research, invalid citations, provider outages, and invalid structured output do not persist false results",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 825,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:05.015Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-416fd69cbbd7fa5cb4d4",
+          "file": "api.spec.ts",
+          "line": 124,
+          "column": 1
+        },
+        {
+          "title": "provider diagnostics stay out of API responses and application logs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 646,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:05.848Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-9fcab958159f4c3e809d",
+          "file": "api.spec.ts",
+          "line": 140,
+          "column": 1
+        },
+        {
+          "title": "all six costly actions fail closed on exhausted or unavailable quotas before provider calls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 990,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:06.499Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1ea1b1599cbc08f16936-db391ceefb38991c3666",
+          "file": "api.spec.ts",
+          "line": 151,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "journeys.spec.ts",
+      "file": "journeys.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "isolated sign-in, authenticated server rendering, session reload, and logout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3363,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:07.510Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-84ec3a7a6c33e1a3e6e0",
+          "file": "journeys.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "profile save, reload, edit, analysis, invalid inputs, and provider failure recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2638,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:10.880Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-fd1e3a001649af1f9559",
+          "file": "journeys.spec.ts",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "choosing a discovered candidate must not submit another paid search",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1390,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:13.524Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-4a97feda5f4fd9904833",
+          "file": "journeys.spec.ts",
+          "line": 85,
+          "column": 1
+        },
+        {
+          "title": "research, company persistence, duplicates, leadership contacts, scores, and dashboard counts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3188,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:14.921Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-715633fce11b88a19a45",
+          "file": "journeys.spec.ts",
+          "line": 96,
+          "column": 1
+        },
+        {
+          "title": "switching company clears contact information from the previous company",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2372,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:18.115Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-95dc089f4ffe07ddceb1",
+          "file": "journeys.spec.ts",
+          "line": 126,
+          "column": 1
+        },
+        {
+          "title": "invalid confirmation links show actionable authentication feedback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 654,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:20.495Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-8c0a8a471be4c41f8532",
+          "file": "journeys.spec.ts",
+          "line": 139,
+          "column": 1
+        },
+        {
+          "title": "LinkedIn and email generation, persistence, editing, rejection, approval, manual tracking, follow-up rules",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5643,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:21.166Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-8332ae745928bb9b54d4",
+          "file": "journeys.spec.ts",
+          "line": 145,
+          "column": 1
+        },
+        {
+          "title": "clicking the current draft preserves unsaved work",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2011,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:26.821Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-d9e2af896700908e3c88",
+          "file": "journeys.spec.ts",
+          "line": 191,
+          "column": 1
+        },
+        {
+          "title": "empty/invalid login fields, invalid credentials, and synthetic registration feedback",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 892,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:28.844Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-c0d88108e68a889dc151",
+          "file": "journeys.spec.ts",
+          "line": 200,
+          "column": 1
+        },
+        {
+          "title": "discovery empty results, rate limits, provider failure, and dashboard database errors recover",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9801,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:29.744Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-22b218e07d0daca97918",
+          "file": "journeys.spec.ts",
+          "line": 218,
+          "column": 1
+        },
+        {
+          "title": "canceling generation or selecting another draft preserves unsaved edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1992,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:39.554Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-6bf18029ae5b8607e074",
+          "file": "journeys.spec.ts",
+          "line": 236,
+          "column": 1
+        },
+        {
+          "title": "confirmation redirects preserve the incoming browser host",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 85,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:41.552Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-ce2493c7532444bfcc5b",
+          "file": "journeys.spec.ts",
+          "line": 250,
+          "column": 1
+        },
+        {
+          "title": "successful synthetic email confirmation establishes a session on the original host",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 786,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:41.645Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-368b7b878925a35924b3",
+          "file": "journeys.spec.ts",
+          "line": 255,
+          "column": 1
+        },
+        {
+          "title": "pending searches and profile saves disable duplicate submissions and recover",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2495,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:42.438Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-33d27849261ef8e25d8f",
+          "file": "journeys.spec.ts",
+          "line": 262,
+          "column": 1
+        },
+        {
+          "title": "unknown routes render a real not-found page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1044,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:44.941Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-a0e2a5a773c7a197ec7e",
+          "file": "journeys.spec.ts",
+          "line": 285,
+          "column": 1
+        },
+        {
+          "title": "dashboard metrics reflect saved, scored, reviewed, approved, and manually sent records",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3548,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:46.000Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-6d352d23b01467402716",
+          "file": "journeys.spec.ts",
+          "line": 290,
+          "column": 1
+        },
+        {
+          "title": "complete discovery UI saves evidence once, survives reloads, and shows duplicates and weak-fit results",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3296,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:49.557Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-580bbc82087b5b82f6f7",
+          "file": "journeys.spec.ts",
+          "line": 308,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "responsive.spec.ts",
+      "file": "responsive.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "all six real pages, long content, keyboard navigation, and layout at 375px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9729,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:08:52.873Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-c780ac3ca01efe78b0b1",
+          "file": "responsive.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "all six real pages, long content, keyboard navigation, and layout at 768px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6421,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:09:02.611Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-8f572853cc2d0af6c57b",
+          "file": "responsive.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "all six real pages, long content, keyboard navigation, and layout at 1024px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6891,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:09:09.050Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-bc45f69576f943ea44b2",
+          "file": "responsive.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "all six real pages, long content, keyboard navigation, and layout at 1440px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8563,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:09:15.952Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-8dc5c9ac0e20d3df4bbd",
+          "file": "responsive.spec.ts",
+          "line": 6,
+          "column": 3
+        },
+        {
+          "title": "desktop sidebar helper text has readable contrast",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [
+                {
+                  "type": "contrast-ratio",
+                  "description": "4.76"
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1395,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:09:24.524Z",
+                  "annotations": [
+                    {
+                      "type": "contrast-ratio",
+                      "description": "4.76"
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-13b29fb1ccac089c6727",
+          "file": "responsive.spec.ts",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "mobile navigation remains open when loading content streams in",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1484,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T14:09:25.930Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0223b006feb3d306446-0949ffbbb3a324e22c77",
+          "file": "responsive.spec.ts",
+          "line": 89,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-23T14:07:24.496Z",
+    "duration": 123275.849,
+    "expected": 34,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

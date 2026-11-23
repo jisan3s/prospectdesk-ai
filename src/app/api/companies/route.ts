@@ -1,3 +1,4 @@
+import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
@@ -47,6 +48,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!hasSameOrigin(request)) {
+    return NextResponse.json({ error: "Invalid request origin" }, { status: 403 });
+  }
   const supabase = await createClient();
 
   const {

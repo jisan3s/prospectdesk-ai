@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
+  // Preserve the browser authority when Next.js normalizes a loopback hostname.
+  url.host = request.headers.get("host") || url.host;
   const tokenHash = url.searchParams.get("token_hash");
   const type = url.searchParams.get("type");
 

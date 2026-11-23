@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles, Building2, Users, Target, MessageSquare } from "lucide-react";
-import { AppShell } from "@/components/layout/app-shell";
 import { Alert, Badge, PageHeading } from "@/components/ui/primitives";
 
 const metricDetails = {
@@ -14,7 +13,7 @@ export type DashboardMetric = { label: keyof typeof metricDetails; value: string
 
 export function DashboardOverview({ metrics, hasError }: { metrics: DashboardMetric[]; hasError: boolean }) {
   return (
-    <AppShell><main className="workspace space-y-8">
+    <main className="workspace space-y-8">
       <PageHeading eyebrow="Your prospecting workspace" title="A little research. A lot of possibility." description="Welcome to ProspectDesk AI. Keep your pipeline moving with focused research, relevant leads, and thoughtful outreach."><Link href="/discover" className="button-primary">Discover companies <ArrowRight size={16} aria-hidden="true"/></Link></PageHeading>
       {hasError && <Alert>Some activity counts could not be loaded. Refresh the page to try again.</Alert>}
       <section aria-label="Prospecting metrics" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -34,6 +33,6 @@ export function DashboardOverview({ metrics, hasError }: { metrics: DashboardMet
         { href: "/qualification", step: "02", title: "Qualify your leads", text: "Understand fit, review scoring signals, and identify possible buyers." },
         { href: "/outreach", step: "03", title: "Make it personal", text: "Create a grounded draft, review every claim, and approve it for manual outreach." },
       ].map(item => <Link href={item.href} key={item.href} className="panel group hover:border-indigo-300"><span className="text-xs font-semibold tracking-widest text-indigo-600">{item.step}</span><h3 className="mt-4 text-base font-semibold">{item.title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{item.text}</p><ArrowRight size={17} className="mt-5 text-slate-400 group-hover:text-indigo-600" aria-hidden="true"/></Link>)}</div></section>
-    </main></AppShell>
+    </main>
   );
 }

@@ -1,0 +1,604 @@
+{
+  "config": {
+    "argv": [
+      "/Users/envytheme/.nvm/versions/node/v24.18.0/bin/node",
+      "/Users/envytheme/Practice Projects/prospectdesk-ai/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "playwright.final.config.ts"
+    ],
+    "configFile": "/Users/envytheme/Practice Projects/prospectdesk-ai/playwright.final.config.ts",
+    "rootDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "snapshotDir": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:3000",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium",
+          "trace": "retain-on-failure",
+          "screenshot": "only-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "artifacts/final/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.65.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "journeys.spec.ts",
+      "file": "journeys.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "isolated sign-in, authenticated server rendering, session reload, and logout",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5119,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:47:35.322Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-84ec3a7a6c33e1a3e6e0",
+          "file": "journeys.spec.ts",
+          "line": 22,
+          "column": 1
+        },
+        {
+          "title": "profile save, reload, edit, analysis, invalid inputs, and provider failure recovery",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 12053,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('status')\nExpected substring: \u001b[32m\"Profile saved\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('status') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('status')\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('status')\nExpected substring: \u001b[32m\"Profile saved\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('status') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('status')\u001b[22m\n\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:54:42",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                      "column": 42,
+                      "line": 54
+                    },
+                    "snippet": " \u001b[90m 52 |\u001b[39m   \u001b[36mawait\u001b[39m login(page)\u001b[33m;\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/profile\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 53 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Save profile\"\u001b[39m\u001b[33m,\u001b[39m exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 54 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"status\"\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m\"Profile saved\"\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// An empty draft profile is allowed.\u001b[39m\n \u001b[90m    |\u001b[39m                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 55 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Analyze with Scout\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 56 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"main\"\u001b[39m)\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"alert\"\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m\"more professional information\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 57 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[32m\"Display name\"\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m.\u001b[39mfill(profile\u001b[33m.\u001b[39mdisplay_name)\u001b[33m;\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                        "column": 42,
+                        "line": 54
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('status')\nExpected substring: \u001b[32m\"Profile saved\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('status') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('status')\u001b[22m\n\n\n  52 |   await login(page); await page.goto(\"/profile\");\n  53 |   await page.getByRole(\"button\", { name: \"Save profile\", exact: true }).click();\n> 54 |   await expect(page.getByRole(\"status\")).toContainText(\"Profile saved\"); // An empty draft profile is allowed.\n     |                                          ^\n  55 |   await page.getByRole(\"button\", { name: \"Analyze with Scout\" }).click();\n  56 |   await expect(page.getByRole(\"main\").getByRole(\"alert\")).toContainText(\"more professional information\");\n  57 |   await page.getByLabel(\"Display name\", { exact: true }).fill(profile.display_name);\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:54:42"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:47:41.485Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-profile-save-relo-d6abf-d-provider-failure-recovery/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-profile-save-relo-d6abf-d-provider-failure-recovery/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-profile-save-relo-d6abf-d-provider-failure-recovery/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                    "column": 42,
+                    "line": 54
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-fd1e3a001649af1f9559",
+          "file": "journeys.spec.ts",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "choosing a discovered candidate must not submit another paid search",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11625,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Use as candidate' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: 'Use as candidate' }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Use as candidate' })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Use as candidate' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: 'Use as candidate' }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Use as candidate' })\u001b[22m\n\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:88:72",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                      "column": 72,
+                      "line": 88
+                    },
+                    "snippet": " \u001b[90m 86 |\u001b[39m   \u001b[36mawait\u001b[39m login(page)\u001b[33m;\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/discover\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 87 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Search companies\"\u001b[39m\u001b[33m,\u001b[39m exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 88 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Use as candidate\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 89 |\u001b[39m   \u001b[36mconst\u001b[39m before \u001b[33m=\u001b[39m (\u001b[36mawait\u001b[39m memory(page))\u001b[33m.\u001b[39mrequests\u001b[33m.\u001b[39mfilter((r\u001b[33m:\u001b[39m { path\u001b[33m:\u001b[39m string }) \u001b[33m=>\u001b[39m r\u001b[33m.\u001b[39mpath \u001b[33m===\u001b[39m \u001b[32m\"/tavily/search\"\u001b[39m)\u001b[33m.\u001b[39mlength\u001b[33m;\u001b[39m\n \u001b[90m 90 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Use as candidate\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 91 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByLabel(\u001b[32m\"name\"\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m\"[E2E TEST] Sample Company\"\u001b[39m)\u001b[33m;\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                        "column": 72,
+                        "line": 88
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Use as candidate' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: 'Use as candidate' }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Use as candidate' })\u001b[22m\n\n\n  86 |   await login(page); await page.goto(\"/discover\");\n  87 |   await page.getByRole(\"button\", { name: \"Search companies\", exact: true }).click();\n> 88 |   await expect(page.getByRole(\"button\", { name: \"Use as candidate\" })).toBeVisible();\n     |                                                                        ^\n  89 |   const before = (await memory(page)).requests.filter((r: { path: string }) => r.path === \"/tavily/search\").length;\n  90 |   await page.getByRole(\"button\", { name: \"Use as candidate\" }).click();\n  91 |   await expect(page.getByLabel(\"name\", { exact: true })).toHaveValue(\"[E2E TEST] Sample Company\");\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:88:72"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:47:53.965Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-choosing-a-discov-1a81b--submit-another-paid-search/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-choosing-a-discov-1a81b--submit-another-paid-search/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-choosing-a-discov-1a81b--submit-another-paid-search/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                    "column": 72,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-4a97feda5f4fd9904833",
+          "file": "journeys.spec.ts",
+          "line": 85,
+          "column": 1
+        },
+        {
+          "title": "research, company persistence, duplicates, leadership contacts, scores, and dashboard counts",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 12081,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Qualified lead', { exact: true })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText('Qualified lead', { exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Qualified lead', { exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Qualified lead', { exact: true })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText('Qualified lead', { exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Qualified lead', { exact: true })\u001b[22m\n\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:100:67",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                      "column": 67,
+                      "line": 100
+                    },
+                    "snippet": " \u001b[90m  98 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/qualification\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m  99 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Score company with Scout\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 100 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[32m\"Qualified lead\"\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 101 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Search leadership sources\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 102 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Use source link below\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 103 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[32m\"Full name\"\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m.\u001b[39mfill(\u001b[32m\"[E2E TEST] Test Person\"\u001b[39m)\u001b[33m;\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                        "column": 67,
+                        "line": 100
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Qualified lead', { exact: true })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText('Qualified lead', { exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Qualified lead', { exact: true })\u001b[22m\n\n\n   98 |   await page.goto(\"/qualification\");\n   99 |   await page.getByRole(\"button\", { name: \"Score company with Scout\" }).click();\n> 100 |   await expect(page.getByText(\"Qualified lead\", { exact: true })).toBeVisible();\n      |                                                                   ^\n  101 |   await page.getByRole(\"button\", { name: \"Search leadership sources\" }).click();\n  102 |   await page.getByRole(\"button\", { name: \"Use source link below\" }).click();\n  103 |   await page.getByLabel(\"Full name\", { exact: true }).fill(\"[E2E TEST] Test Person\");\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:100:67"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:48:06.146Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-research-company--fc968-scores-and-dashboard-counts/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-research-company--fc968-scores-and-dashboard-counts/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-research-company--fc968-scores-and-dashboard-counts/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                    "column": 67,
+                    "line": 100
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-715633fce11b88a19a45",
+          "file": "journeys.spec.ts",
+          "line": 96,
+          "column": 1
+        },
+        {
+          "title": "switching company clears contact information from the previous company",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11634,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel('Full name', { exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"[E2E TEST] First Company Person\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" getByLabel('Full name', { exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel('Full name', { exact: true })\u001b[22m\n\u001b[2m    24 × locator resolved to <input class=\"field\" value=\"[E2E TEST] First Company Person\"/>\u001b[22m\n\u001b[2m       - unexpected value \"[E2E TEST] First Company Person\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel('Full name', { exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"[E2E TEST] First Company Person\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" getByLabel('Full name', { exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel('Full name', { exact: true })\u001b[22m\n\u001b[2m    24 × locator resolved to <input class=\"field\" value=\"[E2E TEST] First Company Person\"/>\u001b[22m\n\u001b[2m       - unexpected value \"[E2E TEST] First Company Person\"\u001b[22m\n\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:134:63",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                      "column": 63,
+                      "line": 134
+                    },
+                    "snippet": " \u001b[90m 132 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[32m\"Source URL\"\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m.\u001b[39mfill(\u001b[32m\"https://example.com/team\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 133 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"combobox\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Company\"\u001b[39m\u001b[33m,\u001b[39m exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m.\u001b[39mselectOption((\u001b[36mawait\u001b[39m second\u001b[33m.\u001b[39mjson())\u001b[33m.\u001b[39mcompany\u001b[33m.\u001b[39mid)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 134 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByLabel(\u001b[32m\"Full name\"\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m\"\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 135 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByLabel(\u001b[32m\"Source URL\"\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m\"\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 136 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 137 |\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                        "column": 63,
+                        "line": 134
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByLabel('Full name', { exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"[E2E TEST] First Company Person\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" getByLabel('Full name', { exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByLabel('Full name', { exact: true })\u001b[22m\n\u001b[2m    24 × locator resolved to <input class=\"field\" value=\"[E2E TEST] First Company Person\"/>\u001b[22m\n\u001b[2m       - unexpected value \"[E2E TEST] First Company Person\"\u001b[22m\n\n\n  132 |   await page.getByLabel(\"Source URL\", { exact: true }).fill(\"https://example.com/team\");\n  133 |   await page.getByRole(\"combobox\", { name: \"Company\", exact: true }).selectOption((await second.json()).company.id);\n> 134 |   await expect(page.getByLabel(\"Full name\", { exact: true })).toHaveValue(\"\");\n      |                                                               ^\n  135 |   await expect(page.getByLabel(\"Source URL\", { exact: true })).toHaveValue(\"\");\n  136 | });\n  137 |\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:134:63"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:48:18.695Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-switching-company-ef54a-n-from-the-previous-company/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-switching-company-ef54a-n-from-the-previous-company/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-switching-company-ef54a-n-from-the-previous-company/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                    "column": 63,
+                    "line": 134
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-95dc089f4ffe07ddceb1",
+          "file": "journeys.spec.ts",
+          "line": 126,
+          "column": 1
+        },
+        {
+          "title": "invalid confirmation links show actionable authentication feedback",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11093,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('main').getByRole('alert')\nExpected substring: \u001b[32m\"confirmation\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('main').getByRole('alert') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('main').getByRole('alert')\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('main').getByRole('alert')\nExpected substring: \u001b[32m\"confirmation\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('main').getByRole('alert') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('main').getByRole('alert')\u001b[22m\n\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:141:59",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                      "column": 59,
+                      "line": 141
+                    },
+                    "snippet": " \u001b[90m 139 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/auth/confirm\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 140 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/error=confirmation_failed/\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 141 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"main\"\u001b[39m)\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"alert\"\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[32m\"confirmation\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 142 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 143 |\u001b[39m\n \u001b[90m 144 |\u001b[39m test(\u001b[32m\"LinkedIn and email generation, persistence, editing, rejection, approval, manual tracking, follow-up rules\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page\u001b[33m,\u001b[39m context }) \u001b[33m=>\u001b[39m {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                        "column": 59,
+                        "line": 141
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('main').getByRole('alert')\nExpected substring: \u001b[32m\"confirmation\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('main').getByRole('alert') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('main').getByRole('alert')\u001b[22m\n\n\n  139 |   await page.goto(\"/auth/confirm\");\n  140 |   await expect(page).toHaveURL(/error=confirmation_failed/);\n> 141 |   await expect(page.getByRole(\"main\").getByRole(\"alert\")).toContainText(\"confirmation\");\n      |                                                           ^\n  142 | });\n  143 |\n  144 | test(\"LinkedIn and email generation, persistence, editing, rejection, approval, manual tracking, follow-up rules\", async ({ page, context }) => {\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:141:59"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:48:30.800Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-invalid-confirmat-b0773-ble-authentication-feedback/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-invalid-confirmat-b0773-ble-authentication-feedback/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-invalid-confirmat-b0773-ble-authentication-feedback/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                    "column": 59,
+                    "line": 141
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-8c0a8a471be4c41f8532",
+          "file": "journeys.spec.ts",
+          "line": 138,
+          "column": 1
+        },
+        {
+          "title": "LinkedIn and email generation, persistence, editing, rejection, approval, manual tracking, follow-up rules",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 11937,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Message', exact: true })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('textbox', { name: 'Message', exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Message', exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Message', exact: true })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('textbox', { name: 'Message', exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Message', exact: true })\u001b[22m\n\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:151:96",
+                    "location": {
+                      "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                      "column": 96,
+                      "line": 151
+                    },
+                    "snippet": " \u001b[90m 149 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[32m\"Contact (optional)\"\u001b[39m)\u001b[33m.\u001b[39mselectOption({ label\u001b[33m:\u001b[39m \u001b[32m\"[E2E TEST] Test Person — Operations Director\"\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 150 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Generate draft with Scout\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 151 |\u001b[39m   \u001b[36mconst\u001b[39m body \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"textbox\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Message\"\u001b[39m\u001b[33m,\u001b[39m exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m;\u001b[39m \u001b[36mawait\u001b[39m expect(body)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 152 |\u001b[39m   expect((\u001b[36mawait\u001b[39m body\u001b[33m.\u001b[39minputValue())\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m280\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 153 |\u001b[39m   \u001b[36mconst\u001b[39m first \u001b[33m=\u001b[39m (\u001b[36mawait\u001b[39m memory(page))\u001b[33m.\u001b[39mtables\u001b[33m.\u001b[39moutreach_drafts[\u001b[35m0\u001b[39m]\u001b[33m;\u001b[39m expect(first\u001b[33m.\u001b[39mstatus)\u001b[33m.\u001b[39mtoBe(\u001b[32m\"draft\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 154 |\u001b[39m   expect(first\u001b[33m.\u001b[39mgeneration_context\u001b[33m.\u001b[39mpersonalization_facts\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                        "column": 96,
+                        "line": 151
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Message', exact: true })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('textbox', { name: 'Message', exact: true }) with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Message', exact: true })\u001b[22m\n\n\n  149 |   await page.getByLabel(\"Contact (optional)\").selectOption({ label: \"[E2E TEST] Test Person — Operations Director\" });\n  150 |   await page.getByRole(\"button\", { name: \"Generate draft with Scout\" }).click();\n> 151 |   const body = page.getByRole(\"textbox\", { name: \"Message\", exact: true }); await expect(body).toBeVisible();\n      |                                                                                                ^\n  152 |   expect((await body.inputValue()).length).toBeLessThanOrEqual(280);\n  153 |   const first = (await memory(page)).tables.outreach_drafts[0]; expect(first.status).toBe(\"draft\");\n  154 |   expect(first.generation_context.personalization_facts.length).toBeGreaterThan(0);\n    at /Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts:151:96"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-23T05:48:42.370Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-LinkedIn-and-emai-d647a-al-tracking-follow-up-rules/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-LinkedIn-and-emai-d647a-al-tracking-follow-up-rules/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/envytheme/Practice Projects/prospectdesk-ai/artifacts/final/playwright/journeys-LinkedIn-and-emai-d647a-al-tracking-follow-up-rules/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/envytheme/Practice Projects/prospectdesk-ai/tests/final/journeys.spec.ts",
+                    "column": 96,
+                    "line": 151
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "aa09586c1d16412a1f00-8332ae745928bb9b54d4",
+          "file": "journeys.spec.ts",
+          "line": 144,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-23T05:47:34.972Z",
+    "duration": 79574.38100000001,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 6,
+    "flaky": 0
+  }
+}
