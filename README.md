@@ -85,7 +85,7 @@ FINAL_REVIEW_ARTIFACT_DIR=artifacts/saved-records node scripts/run-final-review.
 
 The runner starts and stops its own servers without changing hosted records or making paid provider calls. Live RLS tests require a separate non-production database and two dedicated accounts; mock tests do not certify deployed RLS or live AI quality.
 
-**Latest checks (26 November 2026):** lint and TypeScript passed; 63 unit tests passed, one live RLS test skipped; 46 browser tests and 19 isolated PostgreSQL security checks passed. The production build was blocked by this environment's Turbopack port-binding restriction; confirm a successful build before deployment.
+**Latest checks (26 November 2026):** lint and TypeScript passed; 63 unit tests passed, one live RLS test skipped; 46 browser tests and 19 isolated PostgreSQL security checks passed. The production build and production browser regression passed in [GitHub Actions](https://github.com/jisan3s/prospectdesk-ai/actions/runs/45818249396), using local service doubles. Hosted staging and recovery checks remain outstanding.
 
 ## Security and costs
 

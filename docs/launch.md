@@ -2,6 +2,13 @@
 
 Public launch is pending the checks below. A green mocked test suite does not certify the hosted environment.
 
+## Verified status — 26 November 2026
+
+- Local lint, generated-route TypeScript checks, 63 unit tests, 46 development browser tests, and 19 isolated PostgreSQL security checks passed. One opt-in live RLS test was skipped.
+- The production build and browser regression step passed in [GitHub Actions](https://github.com/jisan3s/prospectdesk-ai/actions/runs/45818249396) for commit `1598574`. The local build remains restricted by an internal port-binding permission; the remote production step completed successfully.
+- Read-only checks on the previously approved hosted Supabase project rejected anonymous zero-row reads on all seven application tables (HTTP 401). Email/password auth is enabled, email auto-confirm is disabled, and signup is enabled. No hosted records were read or changed by these probes.
+- Still outstanding: staging persistence and multi-user live RLS checks, real confirmation email delivery, production host/CDN checks, budgeted provider smoke tests, configured monitoring/abuse controls, and a real backup/restore drill. No hosting deployment was found in GitHub deployment metadata; hosting/domain and staging access must be supplied.
+
 ## Automated gate
 
 The GitHub Actions `Verify application` workflow uses Node 24 and synthetic credentials. It runs lint, generated-route type checks, unit tests, isolated PostgreSQL security checks, then a production build and the full browser suite against `next start`. It does not deploy or call live providers.
