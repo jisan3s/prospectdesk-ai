@@ -103,6 +103,8 @@ OpenAI and Tavily usage may incur charges. Use mocks for routine testing and con
 
 More detail: [saved-record pages](docs/saved-records.md) · [UI design and screenshots](docs/ui-modernization.md) · [historical codebase audit](docs/codebase-audit.md).
 
+Before deployment, follow the [launch and recovery checklist](docs/launch.md). GitHub Actions now defines production build/browser checks with local service doubles; a workflow definition alone is not a passing run or a deployed application.
+
 ## Author and license
 
 **[Jisan — Full-Stack Web Developer](https://github.com/jisan3s)**

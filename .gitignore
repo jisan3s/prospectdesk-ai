@@ -15,6 +15,7 @@
 /test-results/
 /artifacts/security/
 /artifacts/saved-records/
+/artifacts/launch/
 
 # next.js
 /.next/
