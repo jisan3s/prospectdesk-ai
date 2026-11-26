@@ -1,3 +1,4 @@
+import { readJsonRequest, enforceRequestRate } from "@/lib/security/request-guard";
 import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
@@ -9,7 +10,11 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const input = qualificationRequest.safeParse(await request.json().catch(() => null));
+  const rateError = await enforceRequestRate(supabase, "record_write");
+  if (rateError) return rateError;
+  const json = await readJsonRequest(request, 16000);
+  if (json.error) return json.error;
+  const input = qualificationRequest.safeParse(json.data);
   if (!input.success) return NextResponse.json({ error: "Invalid company ID" }, { status: 400 });
   const id = input.data.companyId;
 
@@ -23,6 +28,8 @@ export async function POST(request: Request) {
   if (!profileResponse.data?.services?.length) return NextResponse.json({ error: "Save your real services in Profile first" }, { status: 400 });
   const sources = (sourceResponse.data ?? []).map(s => ({ id: s.id, url: s.source_url, finding: s.finding }));
   if (!sources.length) return NextResponse.json({ error: "Research this company in Stage 4 before scoring" }, { status: 400 });
+  const burstError = await enforceRequestRate(supabase, "lead_score");
+  if (burstError) return burstError;
   const { data: allowed, error: quotaError } = await supabase.rpc("claim_qualification_usage", { p_action: "score" });
   if (quotaError) { console.error("Qualification quota error", quotaError.code); return NextResponse.json({ error: "Quota function unavailable; check Stage 5 migration" }, { status: 503 }); }
   if (!allowed) return NextResponse.json({ error: "Daily limit: five qualification attempts" }, { status: 429 });

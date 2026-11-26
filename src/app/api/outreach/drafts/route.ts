@@ -1,3 +1,4 @@
+import { enforceRequestRate } from "@/lib/security/request-guard";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
@@ -5,6 +6,8 @@ export async function GET() {
   const supabase = await createClient();
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const rateError = await enforceRequestRate(supabase, "record_list");
+  if (rateError) return rateError;
   const { data, error: queryError } = await supabase.from("outreach_drafts")
     .select("id, company_id, contact_id, channel, message_type, subject, body, status, revision, created_at, approved_at, sent_at")
     .eq("owner_id", user.id).order("created_at", { ascending: false }).limit(100);

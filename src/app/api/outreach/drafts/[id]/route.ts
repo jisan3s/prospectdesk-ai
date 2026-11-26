@@ -1,3 +1,4 @@
+import { readJsonRequest, enforceRequestRate } from "@/lib/security/request-guard";
 import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -18,18 +19,22 @@ export async function PATCH(request: Request, { params }: Params) {
     .eq("id", id).eq("owner_id", user.id).maybeSingle();
   if (readError) return NextResponse.json({ error: "Unable to load draft" }, { status: 500 });
   if (!existing) return NextResponse.json({ error: "Draft not found" }, { status: 404 });
-  const input = await request.json().catch(() => null);
+  const rateError = await enforceRequestRate(supabase, "record_write");
+  if (rateError) return rateError;
+  const json = await readJsonRequest(request, 16000);
+  if (json.error) return json.error;
+  const input = json.data;
 
   if (request.headers.get("x-outreach-action") === "edit") {
     const parsed = editOutreachInput.safeParse(input);
-    if (!parsed.success || !input || !Number.isInteger(input.revision)) return NextResponse.json({ error: "Invalid edit" }, { status: 400 });
+    if (!parsed.success) return NextResponse.json({ error: "Invalid edit" }, { status: 400 });
     if (!["draft", "in_review", "rejected"].includes(existing.status)) return NextResponse.json({ error: "Approved or sent drafts cannot be edited" }, { status: 409 });
     if (!validLength(existing.channel, existing.message_type, parsed.data.body)) return NextResponse.json({ error: "Message exceeds channel limit" }, { status: 400 });
     if (existing.channel === "email" && !parsed.data.subject) return NextResponse.json({ error: "Email subject required" }, { status: 400 });
     const { data, error } = await supabase.from("outreach_drafts").update({
       subject: existing.channel === "email" ? parsed.data.subject : null,
       body: parsed.data.body, status: "draft",
-    }).eq("id", id).eq("owner_id", user.id).eq("revision", input.revision)
+    }).eq("id", id).eq("owner_id", user.id).eq("revision", parsed.data.revision)
       .select("id, status, revision, subject, body").maybeSingle();
     if (error) return NextResponse.json({ error: "Edit rejected by database workflow" }, { status: 409 });
     if (!data) return NextResponse.json({ error: "Draft changed in another tab; refresh" }, { status: 409 });

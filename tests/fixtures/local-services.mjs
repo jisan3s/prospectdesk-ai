@@ -82,7 +82,33 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname.startsWith("/rest/v1/rpc/")) {
     const rpc=url.pathname.split("/").pop();
     if (state.faults.quotaUnavailable) return send(503,{message:"Synthetic quota failure",code:"TEST"});
+    if (rpc === "list_saved_records") {
+      if (state.faults.database) return send(503,{code:"TEST",message:"Synthetic database failure"});
+      const kind=body.p_kind;
+      const owned=name=>state.tables[name].filter(row=>row.owner_id===user.id);
+      const companies=owned("companies"), contacts=owned("contacts");
+      let rows=owned(({companies:"companies",contacts:"contacts",leads:"lead_scores",drafts:"outreach_drafts"})[kind]);
+      if (kind==="leads") {
+        const latest=new Map();
+        for (const row of [...rows].sort((a,b)=>b.created_at.localeCompare(a.created_at)||b.id.localeCompare(a.id))) if(!latest.has(row.company_id)) latest.set(row.company_id,row);
+        rows=[...latest.values()].filter(row=>row.score>=70);
+      }
+      rows=rows.map(row=>({...row,_company:companies.find(c=>c.id===(row.company_id||row.id))?.name||"Company unavailable",_contact:contacts.find(c=>c.id===row.contact_id)?.full_name||null,
+        _sources:kind==="companies" ? owned("research_sources").filter(s=>s.company_id===row.id).slice(0,50) : []}));
+      const savedTotal=rows.length;
+      const options=[...new Map(rows.map(row=>[row.company_id||row.id,{id:row.company_id||row.id,name:row._company}])).values()].sort((a,b)=>a.name.localeCompare(b.name)).slice(0,100);
+      const statuses=[...new Set(rows.map(row=>row.status).filter(Boolean))].sort().slice(0,50);
+      rows=rows.filter(row=>(!body.p_status||row.status===body.p_status)&&(!body.p_company||(row.company_id||row.id)===body.p_company)&&(!body.p_channel||row.channel===body.p_channel)&&(!body.p_search||[row._company,row.name,row.full_name,row.job_title,row.subject,row.body,row.industry,row.location,row.notes,row.reasoning,row.research_summary,row.website].filter(Boolean).join(" ").toLowerCase().includes(body.p_search.toLowerCase())));
+      const title=row=>row.full_name||row.subject||row.name||row._company;
+      rows.sort((a,b)=>body.p_sort==="name"?title(a).localeCompare(title(b)):body.p_sort==="score"?(b.score||0)-(a.score||0):body.p_sort==="oldest"?a.created_at.localeCompare(b.created_at):b.created_at.localeCompare(a.created_at));
+      const total=rows.length; const offset=((body.p_page||1)-1)*20;
+      return send(200,{rows:rows.slice(offset,offset+20),total,savedTotal,companies:options,statuses});
+    }
     if (rpc.startsWith("claim_")) {
+      if (rpc==="claim_security_rate_limit") {
+        if (state.faults.securityUnavailable) return send(503,{code:"TEST",message:"Synthetic security failure"});
+        if (state.faults.securityDenied) return send(200,false);
+      }
       if (state.faults.rateLimit) return send(200,false);
       const k=`${user.id}:${rpc}:${body.p_action||""}`; state.quotas[k]=(state.quotas[k]||0)+1;
       return send(200,true);
@@ -106,8 +132,17 @@ const server = http.createServer(async (req, res) => {
   let rows=state.tables[table].filter(row=>row[ownerKey]===user.id && matches(row,url.searchParams));
   if (req.method==="GET" || req.method==="HEAD") {
     const count=rows.length;
-    const order=url.searchParams.get("order"); if (order) { const [key,direction]=order.split("."); rows.sort((a,b)=>String(a[key]).localeCompare(String(b[key]))*(direction==="desc" ? -1 : 1)); }
-    rows=rows.slice(Number(url.searchParams.get("offset")||0),Number(url.searchParams.get("limit")||rows.length));
+    const order=url.searchParams.get("order");
+    if (order) rows.sort((a,b) => {
+      for (const field of order.split(",")) {
+        const [key,direction]=field.split(".");
+        const compared=String(a[key]).localeCompare(String(b[key]))*(direction==="desc" ? -1 : 1);
+        if (compared) return compared;
+      }
+      return 0;
+    });
+    const offset=Number(url.searchParams.get("offset")||0);
+    rows=rows.slice(offset,offset+Number(url.searchParams.get("limit")||rows.length));
     res.setHeader("Content-Range",`0-${Math.max(0,rows.length-1)}/${count}`);
   } else if (req.method==="POST") {
     const items=Array.isArray(body) ? body : [body]; rows=[];

@@ -3,10 +3,10 @@ import { ArrowRight, Sparkles, Building2, Users, Target, MessageSquare } from "l
 import { Alert, Badge, PageHeading } from "@/components/ui/primitives";
 
 const metricDetails = {
-  Companies: { icon: Building2, href: "/qualification#companies", description: "Saved to your workspace" },
-  Contacts: { icon: Users, href: "/qualification#decision-makers", description: "Recorded contact candidates" },
-  "Qualified Leads": { icon: Target, href: "/qualification", description: "Latest company score ≥ 70" },
-  "Outreach Drafts": { icon: MessageSquare, href: "/outreach", description: "Drafts awaiting completion" },
+  Companies: { icon: Building2, href: "/companies", description: "Saved to your workspace" },
+  Contacts: { icon: Users, href: "/contacts", description: "Recorded contact candidates" },
+  "Qualified Leads": { icon: Target, href: "/leads", description: "Latest company score ≥ 70" },
+  "Outreach Drafts": { icon: MessageSquare, href: "/drafts", description: "Drafts awaiting completion" },
 };
 
 export type DashboardMetric = { label: keyof typeof metricDetails; value: string };

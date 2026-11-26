@@ -8,7 +8,7 @@ ProspectDesk AI is a B2B prospecting workspace for freelancers, agencies, consul
 
 **Messages are never sent by ProspectDesk AI.** Approval authorizes a draft for your manual use; it does not transmit an email or LinkedIn message.
 
-> **Repository status:** The application code includes the Stage 1–6 workflows, Stage 7 security/testing additions with partial endpoint coverage, and a responsive UI modernization. Database migration files are missing from this checkout. A fresh Supabase project cannot be provisioned from this repository alone; see [Database setup](#database-setup). Stage 8 is not marked complete.
+> **Repository status:** The application code includes the Stage 1–6 workflows, Stage 7 security/testing additions and shared data-route guards, and a responsive UI modernization. Two additive security migrations are included; the original database schema and quota definitions are not. A fresh Supabase project cannot be provisioned from this repository alone; see [Database setup](#database-setup). Stage 8 is not marked complete.
 
 ## Contents
 
@@ -36,7 +36,7 @@ ProspectDesk AI is a B2B prospecting workspace for freelancers, agencies, consul
 - Server-side authentication checks for the dashboard and feature pages, with signed-out visitors redirected to `/login`.
 - Authenticated API handlers and explicit user ownership filters for profile, company, contact, research, scoring, and draft operations.
 - Supabase session refresh through the Next.js proxy and cookie-aware server/browser clients.
-- A database design that **requires Supabase Row-Level Security**. A two-user integration test checks company isolation, but policy definitions are not included here and deployed RLS cannot be verified from source alone.
+- A database design that **requires Supabase Row-Level Security**. A two-user integration test checks company isolation. Restrictive ownership policies are included in the security overlays; the original policies and deployed RLS still require environment-specific verification.
 
 ### Scout Profile Analyzer
 
@@ -83,12 +83,29 @@ ProspectDesk AI is a B2B prospecting workspace for freelancers, agencies, consul
 - Navigate through a shared desktop sidebar or a keyboard-accessible mobile dialog.
 - Reuse Geist typography, Tailwind design tokens, status badges, alerts, loading skeletons, empty states, and responsive forms/editors.
 
+### Saved-record browsers
+
+Use the sidebar or dashboard metric cards to open:
+
+| Page | Saved records |
+| --- | --- |
+| `/companies` — Saved Companies | Company name, industry/location, website, status, research summary and supporting sources. |
+| `/contacts` — Saved Contacts | Company-associated contact candidates, roles, source links and notes. Saving a candidate does not independently verify them. |
+| `/leads` — Qualified Leads | Each company's latest saved assessment with score ≥70, confidence, explanation and saved evidence. A newer weak assessment removes a company from this list. |
+| `/drafts` — Saved Drafts | Messages across all workflow statuses and both channels, with full subject/body and approval/manual-send metadata. |
+
+All four pages require authentication and explicit owner-scoped database reads. Search, relevant company/status/channel filters, sorting, expandable details, and 20-record pagination are available. Search, filters, sorting and pagination execute in the owner-scoped `list_saved_records` database RPC. Only the requested 20 records are downloaded; search uses the Search button and filters/page are stored in the URL. The company filter offers up to 100 choices; name search covers all companies. Refresh records reloads saved data without invoking Scout or Tavily.
+
+The pages are read-only; scoring/contact research and draft editing/review remain in their existing workspaces. “Open lead research” preselects the associated owned company, including a company outside the initial workflow dropdown batch. “Open Outreach Studio” opens the writing workspace. The dashboard's existing 1,000-score calculation limit is unchanged; the qualified-lead browser selects each company's latest saved assessment in SQL and may show more companies in a very large workspace.
+
+See [saved-record implementation and verification notes](docs/saved-records.md) for details.
+
 ### Security and reliability
 
 - Zod request validation and structured AI output schemas.
 - Database quota RPC calls before paid operations, provider timeouts, output limits, and disabled OpenAI SDK retries.
 - Prompt instructions that treat profile text, source snippets, and personalization angles as untrusted data.
-- A shared origin/content-type/body-size guard and hourly quota check **currently integrated into outreach generation**; other endpoints have varying local checks and daily quota calls.
+- Shared byte/time-bounded JSON parsing on every data write, authenticated database-backed burst/hourly guards, and preserved daily/provider safeguards. New security RPCs require the reviewed migrations below.
 - Offline validation/safety tests, signed-out browser/API smoke tests, synthetic UI workflow checks, and an opt-in live RLS test. See [Security](#security) for coverage limits.
 
 ## How it works
@@ -220,7 +237,7 @@ prospectdesk-ai/
 ├── playwright.stage7.config.ts         # Signed-out browser-test configuration
 ├── playwright.final.config.ts          # Isolated full-application browser suite
 ├── vitest.config.mts                   # Unit/evaluation test discovery and source aliases
-├── FINAL_TEST_REPORT.md                # Final browser/API review, fixes, and limitations
+├── .env.example                       # Credential-free local configuration template
 ├── src/
 │   ├── proxy.ts                       # Supabase session refresh entry point
 │   ├── app/
@@ -232,6 +249,10 @@ prospectdesk-ai/
 │   │   ├── discover/page.tsx
 │   │   ├── qualification/page.tsx
 │   │   ├── outreach/page.tsx
+│   │   ├── companies/page.tsx          # Saved company browser
+│   │   ├── contacts/page.tsx           # Saved contact browser
+│   │   ├── leads/page.tsx              # Latest qualified assessments
+│   │   ├── drafts/page.tsx             # All saved outreach statuses
 │   │   ├── actions/auth.ts             # Sign-out Server Action
 │   │   ├── auth/confirm/route.ts        # Email confirmation callback
 │   │   └── api/                        # Companies, profile, discovery, qualification, outreach
@@ -242,16 +263,18 @@ prospectdesk-ai/
 │   │   ├── profile/profile-editor.tsx
 │   │   ├── discover/discover-workspace.tsx
 │   │   ├── qualification/workspace.tsx
+│   │   ├── records/                   # Shared authenticated saved-record pages and filters
 │   │   └── outreach/studio.tsx
 │   └── lib/
 │       ├── ai/                        # Scout profile, research, qualification, outreach modules
 │       ├── http/client.ts              # Shared validated browser API requests
+│       ├── records/                   # Owner-scoped saved-record reads and view models
 │       ├── research/tavily.ts          # Search provider integration
 │       ├── security/                  # Request guard, bounded JSON reader, smoke evaluator
 │       ├── supabase/                  # Browser, server, and proxy clients
 │       └── validations/               # Input/output schemas, UI response contracts, and unit tests
 ├── tests/
-│   ├── unit/                          # Bounded JSON reader tests
+│   ├── unit/                          # Security, validation, and API contract tests
 │   ├── evals/                         # Offline output-contract and safety smoke tests
 │   ├── integration/                   # Opt-in two-user Supabase RLS test
 │   ├── e2e/                           # Signed-out API/auth and responsive login checks
@@ -260,12 +283,17 @@ prospectdesk-ai/
 ├── scripts/
 │   ├── verify-ui.mjs                   # Local mocked browser workflows and screenshots
 │   ├── run-final-review.mjs            # Start isolated services/app, test, and stop owned processes
-│   └── run-live-evals.ts               # Opt-in live OpenAI smoke evaluation
+│   ├── run-live-evals.ts               # Opt-in live OpenAI smoke evaluation
+│   ├── verify-security-database.mjs     # Isolated PostgreSQL migration checks
+│   └── verify-hosted-security-migrations.mjs # Metadata-only compatibility checks
+├── supabase/
+│   ├── migrations/                    # Ordered additive security overlays
+│   └── security-audit.sql             # Read-only deployment audit queries
 ├── artifacts/ui/                      # Existing screenshots and fixture result summary
 └── docs/ui-modernization.md            # Design-system and UI verification report
 ```
 
-There is no `supabase/migrations/` directory, `supabase/config.toml`, or `.env.example` in this checkout. Generated build output and dependencies are omitted from the tree.
+The security overlays and `.env.example` are included. There is no `supabase/config.toml` or complete base-schema migration history in this checkout. Generated build output and dependencies are omitted from the tree.
 
 ## Installation and setup
 
@@ -290,7 +318,11 @@ For a reproducible clean installation using the checked-in lockfile, `npm ci` is
 
 ### Environment variables
 
-Create `.env.local` in the project root with your own values:
+Copy the template, then edit `.env.local` with your own values:
+
+```bash
+cp .env.example .env.local
+```
 
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
@@ -314,11 +346,13 @@ The code uses **`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`**, not `NEXT_PUBLIC_SUPAB
 
 Next.js loads `.env.local` for the application. Standalone test/scripts do not automatically receive all Next.js environment files; export the needed variables explicitly as described in [Testing](#testing-and-quality-assurance).
 
-An example environment file is not supplied. A useful follow-up is a sanitized `.env.example` containing only these placeholders. The current `.gitignore` ignores every `.env*` file, so committing such a template would also require an explicit ignore exception. Keep actual credentials out of Git.
+Only the credential-free `.env.example` template is tracked; real `.env*` files are ignored. Keep actual credentials out of Git.
 
 ### Database setup
 
-**The repository is not yet self-contained for database provisioning.** The previous README referred to a Stage 7 SQL migration that does not exist in this checkout. No Supabase CLI project configuration is supplied, so there is no verified migration command to run here.
+**The repository is not yet self-contained for database provisioning.** The previous README referred to a Stage 7 SQL migration that does not exist in this checkout. Two additive security overlays now exist under `supabase/migrations/`; they require the existing Stage 2–7 schema and do not recreate it. No Supabase CLI project configuration is supplied, so there is no verified CLI deployment command to run here.
+
+**Deploy the security overlays before deploying the matching application code.** Missing safeguards fail closed: APIs return 503 and saved-record pages display an unavailable state. Review both SQL files under `supabase/migrations/` and the read-only `supabase/security-audit.sql`, then test both ordered migrations against an approved staging copy. Existing trigger behavior and function privileges require project-specific review. The two overlays were applied to this application's configured hosted project on 25 November 2026 after explicit user authorization; deployment evidence is retained locally and excluded from Git. Do not rerun the one-time migrations on that project. Other databases still require the ordered setup.
 
 For an existing database, confirm its schema/version with the maintainer before applying any SQL. For a new project:
 
@@ -350,9 +384,11 @@ Required RPCs referenced in source:
 | `save_discovered_company` | `p_name`, `p_website`, `p_industry`, `p_location`, `p_summary`, `p_sources` | Save reviewed company research and evidence. |
 | `claim_qualification_usage` | `p_action`: `score` or `roles` | Scoring and leadership-search quotas. |
 | `claim_outreach_generation` | None | Outreach daily quota. |
-| `claim_api_hourly_limit` | `p_action`: `outreach_generate` in the integrated route | Stage 7 hourly safeguard. |
+| `claim_api_hourly_limit` | `p_action`: `outreach_generate` | Preserved Stage 7 hourly safeguard. |
+| `claim_security_rate_limit` | `p_action`: one of six costly actions, `record_write`, or `record_list` | New atomic minute/hour limits, derived from `auth.uid()`. |
+| `list_saved_records` | `p_kind`, `p_search`, `p_status`, `p_company`, `p_channel`, `p_sort`, `p_page` | Invoker-rights, owner-scoped search and 20-record pages. |
 
-The precise SQL definitions, hourly ceiling, underlying quota tables, and deployed RLS/trigger behavior cannot be established from the checked-in files.
+The new security overlays are versioned and locally tested. The original daily/hourly quota definitions, base schema, and deployed policy/trigger behavior still require verification against the actual project.
 
 ### Authentication configuration
 
@@ -399,6 +435,17 @@ These are the four npm scripts defined in `package.json`:
 There is no npm `test` or `typecheck` script. Use the direct commands below instead of `npm run test`.
 
 ## Testing and quality assurance
+
+### Latest verification — 26 November 2026
+
+- ESLint and TypeScript: passed.
+- Vitest: 63 passed; one opt-in live RLS test skipped.
+- Isolated application Playwright suite: 46 passed, including the saved-record pages at 375/768/1024/1440px and human-reviewed outreach workflows.
+- Isolated PostgreSQL security fixture: 19 checks passed. This does not certify hosted database behavior.
+- Documentation links, staged-file hygiene, and a scan for known local credentials/common private-token patterns: passed. This is not a full security audit.
+- Production build: attempted but blocked by an environment-level Turbopack internal port-binding error (`Operation not permitted`). A successful production build must be confirmed in an unrestricted development or CI environment before deployment.
+
+The browser suite uses local service doubles; no hosted business records were changed and no paid OpenAI or Tavily calls were made during this verification.
 
 ### Local static and offline checks
 
@@ -463,9 +510,9 @@ With ports 3000 and 54329 free, run:
 node scripts/run-final-review.mjs
 ```
 
-The runner starts the actual Next.js development application and local in-memory Auth/PostgREST/RPC/OpenAI/Tavily service doubles, using synthetic process-level credentials. It runs `playwright.final.config.ts`, then stops only the processes it started. It refuses to replace an existing server and does not edit `.env.local` or write to the configured Supabase project. Provider traffic is redirected locally or blocked.
+The runner starts the actual Next.js development application and local in-memory Auth/PostgREST/RPC/OpenAI/Tavily service doubles, using synthetic process-level credentials. It runs `playwright.final.config.ts`, then stops only the processes it started. It refuses to replace an existing server and does not edit `.env.local` or write to the configured Supabase project. Provider traffic is redirected locally or blocked. Set `FINAL_REVIEW_ARTIFACT_DIR=artifacts/saved-records` to retain a separate set of results/screenshots without replacing the prior final-review artifacts.
 
-The tests visit the real application URLs and Route Handlers, covering authenticated UI workflows, reload persistence in the service double, metrics, authorization/error paths, and four viewport sizes. Results and screenshots are saved under `artifacts/final/`. These tests exercise more than intercepted component responses, but **do not verify deployed PostgreSQL RLS, quota SQL, triggers, or live model quality**. See [FINAL_TEST_REPORT.md](FINAL_TEST_REPORT.md) for the evidence and remaining readiness requirements.
+The tests visit the real application URLs and Route Handlers, covering authenticated UI workflows, reload persistence in the service double, metrics, authorization/error paths, and four viewport sizes. Results and screenshots are saved under `artifacts/final/`. These tests exercise more than intercepted component responses, but **do not verify deployed PostgreSQL RLS, quota SQL, triggers, or live model quality**. Inspect the generated results locally and use the coverage limits below when assessing readiness.
 
 ### Live RLS isolation test
 
@@ -527,18 +574,20 @@ Both guard checks intentionally exit with status 1 and a configuration message. 
 
 - **Authentication and ownership:** protected pages and data APIs verify the user through Supabase; records are selected/changed using explicit ownership filters. User IDs for writes are assigned from the authenticated session rather than trusted from form input.
 - **Server credentials:** OpenAI and Tavily modules use `server-only`; secret provider keys have no `NEXT_PUBLIC_` prefix.
-- **Request validation:** Zod validates feature payloads and AI structures. Data API writes reject a mismatched supplied `Origin` using the incoming request authority. Body-limit coverage varies; the basic company-creation API does not use the bounded JSON reader.
+- **Request validation:** Zod validates feature payloads and AI structures. Data API writes reject a mismatched supplied `Origin` using the incoming request authority. All data-write bodies use byte-bounded streaming reads, exact JSON MIME checks, and a 10-second body-read deadline. Bodyless profile analysis remains supported.
 - **Outreach request hardening:** `/api/outreach/generate` applies origin and JSON content-type checks, a declared-size precheck, and a streaming 16,000-byte JSON reader. It authenticates before quota RPC calls.
-- **Usage safeguards:** expensive operations call their daily quota RPCs before provider requests. Outreach generation additionally calls `claim_api_hourly_limit`; the other five costly actions do not currently call that shared hourly helper.
+- **Usage safeguards:** all six expensive operations additionally call the new minute/hour security RPC before providers. Existing daily quotas and outreach's original hourly RPC remain intact. Record writes/list reads also have budgets; database mutation triggers cover direct authenticated Data API writes once migrated.
 - **Provider limits:** OpenAI calls disable SDK retries, have 25–30 second timeouts, and bound output tokens. Tavily uses a 12-second timeout, basic search, no raw content/images/answer, and at most eight results, with bounded returned fields.
 - **AI handling:** prompts explicitly separate untrusted source/profile material from instructions and prohibit fabricated credentials, people, relationships, and business claims. Responses are parsed into Zod schemas; research citations are range-checked. These are defenses and validation, not guarantees of truth.
 - **Human review:** the draft API checks allowed transitions, rejects edits to approved/sent drafts, and requires an explicit `confirmedManualSend` flag for the sent-state update.
 
 ### Limits and database requirements
 
-RLS policies, quota implementation details, and expected database workflow triggers are not available in this checkout. Application ownership filters do not replace RLS for clients using the public Supabase key. Verify the deployed policies, revision increments, immutable fields, timestamp behavior, and RPC grants independently.
+The new overlays add restrictive owner/parent ownership boundaries, anonymous/PUBLIC grant restrictions, private atomic counters, and outreach workflow triggers. They preserve existing permissive policies; owner access is supplied only when a table has none. These additions have isolated PostgreSQL fixture coverage and were checked against a metadata-only copy of the configured hosted schema before installation on 25 November 2026. This is point-in-time evidence, not a continuing security certification. Application ownership filters do not replace live RLS verification. The original schema/quota functions and any existing security-definer RPCs still require review.
 
-The Stage 7 shared body/hourly guard is only integrated into outreach generation. Other handlers use local validation and, in several cases, unrestricted `request.json()` reads. Do not describe the shared 16,000-byte ceiling or hourly safeguard as application-wide protections.
+Body caps are route-specific: profile 24,000 bytes, research saving 64,000, contact saving 32,000, other body-taking writes 16,000, and optional profile-analysis payloads 1,024. Hosting-level ingress/body and global per-IP protections are still necessary against unauthenticated or volumetric abuse.
+
+Security headers cover framing, MIME sniffing, referrer/permissions controls and CSP; production also sets HSTS. CSP permits inline bootstrap scripts for Cache Components, so it is a compatibility policy rather than strict nonce-based XSS protection. Deploy behind HTTPS and verify the actual reverse proxy/headers.
 
 The research-save endpoint accepts a user-supplied research snapshot after schema/domain/evidence checks. A signed-in user can modify their own submitted research; it is not an immutable record of a provider response. Audit-grade attribution would need server-owned snapshots and stricter provenance controls.
 
@@ -546,7 +595,7 @@ There is no demonstrated deployment-wide per-IP limiter or full production secur
 
 ### Protect configuration
 
-- Keep `.env.local`, test credentials, and all real API keys out of Git; `.env*` is currently ignored.
+- Keep `.env.local`, test credentials, and all real API keys out of Git; real `.env*` files are ignored, with an exception for the placeholder-only `.env.example`.
 - Use only the publishable Supabase key in public configuration. Never place a service-role key, OpenAI key, or Tavily key in a browser-exposed variable.
 - Use a secrets manager or hosting environment settings for deployed secrets, and rotate any credential accidentally exposed.
 - Avoid logging raw profile text, prospect data, tokens, or provider request payloads.
@@ -602,7 +651,7 @@ The existing Qualification page combines lead scoring, leadership-source researc
 
 Mobile examples: [Dashboard](artifacts/ui/dashboard-375.png), [Profile analysis](artifacts/ui/profile-analysis-375.png), [Company research](artifacts/ui/discovery-research-375.png), [Qualification](artifacts/ui/qualification-score-375.png), and [Outreach Studio](artifacts/ui/outreach-375.png).
 
-The [UI modernization report](docs/ui-modernization.md) documents the design system and its recorded checks. This README's source audit clarifies safeguard integration and database-file gaps; that report is not evidence that missing policies or migrations exist.
+The [UI modernization report](docs/ui-modernization.md) documents the design system and its recorded checks. That historical report describes the UI work; use the current Database setup and Security sections for deployment requirements.
 
 ## Development stages
 
@@ -611,12 +660,12 @@ This mapping describes functionality visible in the current source, rather than 
 | Stage | Scope | Repository evidence / status |
 | --- | --- | --- |
 | 1 — Project Setup and Foundation | Next.js, React, TypeScript, Tailwind, application foundation. | Present in dependencies, configuration, routes, and UI. |
-| 2 — Database and Authentication | Supabase clients, email/password authentication, protected pages, owned data access. | Application integration present; schema, migrations, and RLS definitions missing. |
+| 2 — Database and Authentication | Supabase clients, email/password authentication, protected pages, owned data access. | Application integration and additive RLS overlays present; original base-schema history missing. |
 | 3 — Scout AI Profile Analyzer | Profile editing, persistence, structured AI analysis. | Profile page/API, validation, and Scout module present; requires database/RPC setup. |
 | 4 — Company Research and Discovery | Tavily search, company-domain research, evidence saving, duplicate handling. | Discovery workspace/routes and research module present; save/quota RPC definitions missing. |
 | 5 — Decision-Maker Identification and Lead Scoring | Leadership-source search, contact candidates, evidence-based company scores. | Qualification workspace, schemas, routes, and AI rubric present. |
 | 6 — Personalized Outreach Studio | Draft generation/editing, review, approval/rejection, manual-send tracking, follow-ups. | Studio, generator, and transition API present; expected database triggers require verification. |
-| 7 — Security Hardening and Testing | Request guard, quotas, bounded JSON helper, offline/e2e/RLS tests, evaluation tooling. | Additions present; shared guard integrated only into outreach generation, and live coverage remains opt-in. |
+| 7 — Security Hardening and Testing | Request guard, quotas, bounded JSON helper, offline/e2e/RLS tests, evaluation tooling. | Additions present; shared guards integrated across data routes, SQL security overlays present; live coverage remains opt-in. |
 | UI modernization | Shared responsive shell, design tokens, feature layouts, loading/error states, screenshot checks. | Implemented across existing pages; details in `docs/ui-modernization.md`. |
 | 8 | Further development. | Not documented as completed in this repository. |
 
@@ -626,12 +675,12 @@ See the [codebase audit and cleanup report](docs/codebase-audit.md) for the base
 
 The following are proposed follow-ups, not implemented features or release commitments:
 
-- Restore authoritative, version-controlled database migrations and Supabase setup configuration, including all RLS policies, quotas, and outreach workflow triggers.
-- Add a sanitized environment template and pin a supported Node runtime.
-- Extend and test consistent request-size/hourly safeguards across the remaining costly endpoints; review edge/account abuse controls.
+- Restore authoritative, version-controlled database migrations and Supabase setup configuration, including the original RLS policies, quotas, and outreach workflow triggers to review alongside the new security overlays.
+- Pin a supported Node runtime and automate offline checks in CI.
+- Verify deployment-wide per-IP/account-abuse controls, HTTPS/security headers, and the installed database security overlays.
 - Broaden authenticated, cross-table RLS, concurrency, and provider-failure tests.
 - Store immutable server-owned research snapshots where stronger provenance is needed.
-- Expose safe saved research/personalization context and last-updated information in Outreach, and improve draft searching and unsaved-edit navigation feedback.
+- Expose safe saved research/personalization context and last-updated information in Outreach, and improve Studio-specific draft searching and unsaved-edit navigation feedback.
 - Add privacy-aware operational monitoring, retention/deletion workflows, and a broader accessibility review.
 
 Automatic sending, mailbox connections, CRM synchronization, and autonomous campaigns are not implemented or promised by this roadmap.
@@ -645,3 +694,7 @@ No project license file or license declaration is present in the repository. Lic
 **Jisan — Full-Stack Web Developer**
 
 [GitHub](https://github.com/jisan3s) · [Project repository](https://github.com/jisan3s/prospectdesk-ai)
+
+## Repository hygiene
+
+Commit source, migrations, tests, scripts, configuration, and documentation. Local environment files, private database snapshots, dependencies, build output, and new security/saved-record test artifacts stay out of Git. Existing synthetic UI screenshots remain tracked for the README. Historical test reports may be archived locally; rerun checks when assessing a new revision.

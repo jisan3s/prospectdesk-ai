@@ -11,10 +11,11 @@ import {
 
 import {
   validateWriteRequest,
+  enforceRequestRate,
   enforceHourlyQuota,
 } from "@/lib/security/request-guard";
 
-import { readBoundedJson } from "@/lib/security/safe-json";
+import { readBoundedJson, RequestBodyError } from "@/lib/security/safe-json";
 
 export async function POST(request: Request) {
   // STEP 1: Validate request origin, content type and declared size
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
           ? "Request body too large"
           : "Invalid JSON request",
       },
-      { status: oversized ? 413 : 400 }
+      { status: error instanceof RequestBodyError ? error.status : 400 }
     );
   }
 
@@ -216,6 +217,9 @@ export async function POST(request: Request) {
 
     previousMessage = data.body;
   }
+
+  const burstError = await enforceRequestRate(supabase, "outreach_generate");
+  if (burstError) return burstError;
 
   // STEP 9: Enforce Stage 7 hourly quota
   const limited = await enforceHourlyQuota(

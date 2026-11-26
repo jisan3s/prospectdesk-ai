@@ -1,3 +1,4 @@
+import { readJsonRequest, enforceRequestRate } from "@/lib/security/request-guard";
 import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
@@ -14,22 +15,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let raw: string;
-  try {
-    raw = await request.text();
-    if (raw.length > 24_000) {
-      return NextResponse.json({ error: "Profile payload too large" }, { status: 413 });
-    }
-  } catch {
-    return NextResponse.json({ error: "Unable to read request" }, { status: 400 });
-  }
-
-  let payload: unknown;
-  try {
-    payload = JSON.parse(raw);
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
+  const rateError = await enforceRequestRate(supabase, "record_write");
+  if (rateError) return rateError;
+  const json = await readJsonRequest(request, 24000);
+  if (json.error) return json.error;
+  const payload = json.data;
 
   const result = profileInputSchema.safeParse(payload);
   if (!result.success) {

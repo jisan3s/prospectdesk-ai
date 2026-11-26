@@ -1,3 +1,4 @@
+import { readJsonRequest, enforceRequestRate } from "@/lib/security/request-guard";
 import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
@@ -9,8 +10,11 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  let body: unknown;
-  try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
+  const rateError = await enforceRequestRate(supabase, "record_write");
+  if (rateError) return rateError;
+  const json = await readJsonRequest(request, 64000);
+  if (json.error) return json.error;
+  const body = json.data;
   const parsed = saveResearchSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid research payload" }, { status: 400 });
   const { company, research, sources } = parsed.data;

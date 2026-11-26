@@ -15,3 +15,9 @@ describe("Request body limits", () => {
     await expect(readBoundedJson(request)).rejects.toThrow();
   });
 });
+
+it("terminates a stalled body read", async () => {
+  const stream=new ReadableStream<Uint8Array>({start(){}});
+  const request=new Request("https://example.com/api", {method:"POST",body:stream,duplex:"half"} as RequestInit);
+  await expect(readBoundedJson(request,100,10)).rejects.toThrow("Request body timed out");
+});

@@ -1,3 +1,4 @@
+import { readJsonRequest, enforceRequestRate } from "@/lib/security/request-guard";
 import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
@@ -13,8 +14,11 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  let body: unknown;
-  try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
+  const rateError = await enforceRequestRate(supabase, "record_write");
+  if (rateError) return rateError;
+  const json = await readJsonRequest(request, 16000);
+  if (json.error) return json.error;
+  const body = json.data;
   const parsed = companyInputSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Invalid company fields" }, { status: 400 });
   const website = normalizedCompanyUrl(parsed.data.website);
@@ -28,6 +32,8 @@ export async function POST(request: Request) {
   if (!profile || !(profile.summary || profile.services?.length))
     return NextResponse.json({ error: "Save your professional profile first" }, { status: 400 });
 
+  const burstError = await enforceRequestRate(supabase, "company_research");
+  if (burstError) return burstError;
   const { data: allowed, error: quotaError } = await supabase.rpc("claim_discovery_usage", { p_action: "research" });
   if (quotaError) return NextResponse.json({ error: "Research quota unavailable. Check migration." }, { status: 503 });
   if (!allowed) return NextResponse.json({ error: "Daily research limit reached (5 per UTC day)" }, { status: 429 });

@@ -2,6 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
+const developmentLog = `${process.env.FINAL_REVIEW_ARTIFACT_DIR || "artifacts/final"}/development.log`;
 const services = "http://127.0.0.1:54329";
 const uuid = "019abbaa-1111-7111-8111-aaaaaaaaaaaa";
 const profile = { display_name: "[E2E TEST] Developer", headline: "Website consultant", linkedin_url: "", portfolio_url: "", summary: "Accessible website development for professional service businesses.", raw_profile_text: "TypeScript website developer.", skills: ["TypeScript"], services: ["Website development"] };
@@ -141,11 +142,11 @@ test("provider diagnostics stay out of API responses and application logs", asyn
   const id = await setup(page);
   const marker = "E2E_PRIVATE_PROVIDER_DIAGNOSTIC";
   await fault(page, { openai: true, providerDiagnostic: marker });
-  const offset = fs.readFileSync("artifacts/final/development.log", "utf8").length;
+  const offset = fs.readFileSync(developmentLog, "utf8").length;
   const response = await page.request.post("/api/qualification/score", { data: { companyId: id } });
   expect(response.status()).toBe(502); expect(await response.text()).not.toContain(marker);
-  await expect.poll(() => fs.readFileSync("artifacts/final/development.log", "utf8").slice(offset)).toContain("Lead scoring failed");
-  expect(fs.readFileSync("artifacts/final/development.log", "utf8").slice(offset)).not.toContain(marker);
+  await expect.poll(() => fs.readFileSync(developmentLog, "utf8").slice(offset)).toContain("Lead scoring failed");
+  expect(fs.readFileSync(developmentLog, "utf8").slice(offset)).not.toContain(marker);
 });
 
 test("all six costly actions fail closed on exhausted or unavailable quotas before provider calls", async ({ page }) => {

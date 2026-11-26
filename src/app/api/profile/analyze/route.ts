@@ -1,3 +1,4 @@
+import { readJsonRequest, enforceRequestRate } from "@/lib/security/request-guard";
 import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
@@ -17,6 +18,10 @@ export async function POST(request: Request) {
   if (authError || !user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const json = await readJsonRequest(request, 1024, true);
+  if (json.error) return json.error;
+  if (!json.data || typeof json.data !== "object" || Array.isArray(json.data) || Object.keys(json.data).length) return NextResponse.json({ error: "This action uses your saved profile" }, { status: 400 });
 
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
@@ -47,6 +52,8 @@ export async function POST(request: Request) {
   }
 
   // Atomic 3-per-UTC-day usage ceiling. Claimed attempts are charged even if the API fails.
+  const burstError = await enforceRequestRate(supabase, "profile_analyze");
+  if (burstError) return burstError;
   const { data: allowed, error: quotaError } = await supabase
     .rpc("claim_profile_analysis_quota");
   if (quotaError) {
