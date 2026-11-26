@@ -21,6 +21,7 @@ jobs:
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: synthetic-publishable-key
       RUN_RLS_TESTS: "0"
       FINAL_REVIEW_MODE: production
+      FINAL_REVIEW_SMOKE: "1"
       FINAL_REVIEW_ARTIFACT_DIR: artifacts/launch
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +30,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - run: npm audit --audit-level=high
       - run: npm run lint
       - run: npx next typegen
       - run: npx tsc --noEmit

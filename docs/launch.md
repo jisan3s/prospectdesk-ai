@@ -1,22 +1,34 @@
 # Launch and recovery
 
-Public launch is pending the checks below. A green mocked test suite does not certify the hosted environment.
+The application is publicly reachable at https://prospectdesk-ai.netlify.app. Broader production readiness still depends on the outstanding authenticated, email-delivery, and recovery checks below.
 
 ## Verified status — 26 November 2026
 
-- Local lint, generated-route TypeScript checks, 63 unit tests, 46 development browser tests, and 19 isolated PostgreSQL security checks passed. One opt-in live RLS test was skipped.
-- The production build and browser regression step passed in [GitHub Actions](https://github.com/jisan3s/prospectdesk-ai/actions/runs/45818249396) for commit `1598574`. The local build remains restricted by an internal port-binding permission; the remote production step completed successfully.
-- Read-only checks on the previously approved hosted Supabase project rejected anonymous zero-row reads on all seven application tables (HTTP 401). Email/password auth is enabled, email auto-confirm is disabled, and signup is enabled. No hosted records were read or changed by these probes.
-- Still outstanding: staging persistence and multi-user live RLS checks, real confirmation email delivery, production host/CDN checks, budgeted provider smoke tests, configured monitoring/abuse controls, and a real backup/restore drill. No hosting deployment was found in GitHub deployment metadata; hosting/domain and staging access must be supplied.
+| Check | Result | Scope |
+| --- | --- | --- |
+| Public browser/API smoke suite | 27 passed | Login/signup UI at four widths, all nine protected pages, all 13 data API methods, security headers; signed out only. |
+| ESLint and generated-route TypeScript checks | Passed | Local checkout. |
+| Vitest | 63 passed; one skipped | Offline tests; dedicated live RLS test skipped. |
+| Isolated local browser regression | 73 passed | 46 workflow tests plus 27 signed-out smoke checks, using local service doubles. |
+| PostgreSQL security fixture | 19 passed | Isolated database, not production persistence. |
+| npm audit | Zero known vulnerabilities | Installed dependency advisories at review time; not a complete security audit. |
+| Public login JavaScript | Nine directly referenced scripts checked; no provider credentials detected | Does not cover every deployed asset. |
+| Hosted anonymous table access | All seven tables rejected zero-row anonymous reads with HTTP 401 | No business records retrieved or changed. |
+| Hosted Auth | Email/password enabled; email confirmation enabled; signup enabled | Public Auth settings endpoint. |
+| Invalid confirmation-link redirect | HTTPS hosted origin | One synthetic invalid token; no real token consumed or email sent. |
+
+Netlify built release `3038bd7` successfully. The earlier GitHub production verification also passed for `1598574`; subsequent runs are visible in [Actions](https://github.com/jisan3s/prospectdesk-ai/actions). A local production build is restricted by an internal Turbopack port-binding permission, so production builds are verified remotely.
+
+Still outstanding: fresh signup/confirmation email delivery, valid-login/logout persistence on the deployed host, dedicated staging writes and cross-user live RLS tests, budgeted provider smoke tests, operational monitoring/abuse-control review, and a real backup/restore drill. No paid provider requests, real outreach, account creation, or business-record writes were performed during this review.
 
 ## Automated gate
 
-The GitHub Actions `Verify application` workflow uses Node 24 and synthetic credentials. It runs lint, generated-route type checks, unit tests, isolated PostgreSQL security checks, then a production build and the full browser suite against `next start`. It does not deploy or call live providers.
+The GitHub Actions `Verify application` workflow uses Node 24 and synthetic credentials. It runs dependency auditing, lint, generated-route type checks, unit tests, isolated PostgreSQL security checks, then a production build and the full workflow suite against `next start`. With `FINAL_REVIEW_SMOKE=1`, it also runs the signed-out smoke suite against that same local instance. The smoke target is forced to loopback, even if an external `E2E_BASE_URL` is inherited. The workflow does not deploy or call live providers.
 
 To run the same production browser check locally with ports 3000 and 54329 free:
 
 ```bash
-FINAL_REVIEW_MODE=production FINAL_REVIEW_ARTIFACT_DIR=artifacts/launch node scripts/run-final-review.mjs
+FINAL_REVIEW_MODE=production FINAL_REVIEW_SMOKE=1 FINAL_REVIEW_ARTIFACT_DIR=artifacts/launch node scripts/run-final-review.mjs
 ```
 
 A failed build stops the runner before browser tests. Logs and screenshots remain in the ignored artifact directory. Both build and runtime use the local service-double URL; this output must never be deployed against the hosted project. Build a separate release with the correct production public variables.
@@ -58,7 +70,21 @@ The root `netlify.toml` sets Node 24, `npm run build`, and `.next` output. Netli
 5. Set the Supabase Site URL to the chosen canonical HTTPS origin and allow its exact `/auth/confirm` URL. Retain any existing approved local/staging redirects; do not add broad wildcard redirects.
 6. Verify login/confirmation/logout, signed-out route/API rejection, private responses, and mobile navigation on the deployed host. Keep mutating or paid tests gated by the staging and spending approvals above.
 
-No Netlify project has been created or deployed merely by adding this configuration. Hosting limits and commercial-use terms should be reviewed in the [Free-plan documentation](https://www.netlify.com/blog/introducing-netlify-free-plan/) and [pricing](https://www.netlify.com/pricing/).
+Netlify project `prospectdesk-ai` has been provisioned at `https://prospectdesk-ai.netlify.app`. Deployment `6b082da5aec8d7f75af64ebe` built commit `3038bd7` successfully on 26 November 2026 using Next.js 16.4.6, Node 24, and Netlify Next.js Runtime 5.16.9. The build's secret scan reported no secrets in 177 scanned files. Five environment variables are saved in Netlify, with provider keys masked; no credential values belong in this document.
+
+The project is now public: external browsers reach the login page, while application pages and data APIs still enforce Supabase authentication. The 27 signed-out smoke checks passed on the public deployment. Protected streamed pages may initially return HTTP 200; browser tests verify that the actual navigation ends at `/login`, rather than treating the initial status as proof of access.
+
+A synthetic invalid verification link redirects to `https://prospectdesk-ai.netlify.app`, confirming that the provider's default error redirect no longer points at localhost. Email confirmation remains enabled. Gmail SMTP setup was discussed with the maintainer, but current SMTP credentials, the exact allowlist/template, and fresh email delivery were not inspected or exercised during the final public review. Verify them directly before relying on public signup. Keep real passwords and confirmation links out of reports and Git. Do not disable email confirmation to work around delivery failures.
+
+Repeat the public smoke suite without account creation, database writes, or provider calls:
+
+```bash
+E2E_BASE_URL=https://prospectdesk-ai.netlify.app npx playwright test --config=playwright.stage7.config.ts
+```
+
+The 27 scenarios cover responsive login/signup controls at four widths, all nine protected pages, all 13 data API methods, and application security headers. This is not authenticated workflow or email-delivery verification. Historical reports and new generated evidence are kept separately; final-review artifacts under `artifacts/launch/` are ignored by Git.
+
+Hosting limits and commercial-use terms should be reviewed in the [Free-plan documentation](https://www.netlify.com/blog/introducing-netlify-free-plan/) and [pricing](https://www.netlify.com/pricing/).
 
 ### Release checks
 

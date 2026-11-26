@@ -51,7 +51,7 @@ Fill in `.env.local` using your own credentials:
 
 Review and test migrations on staging before deployment; missing security RPCs cause affected operations to fail closed. They were installed on the configured hosted project on 25 November 2026—do not blindly rerun them there. Use [security-audit.sql](supabase/security-audit.sql) for read-only deployment checks.
 
-Enable Supabase email/password authentication and configure the local site URL as `http://localhost:3000`. If email confirmation is enabled, use this confirmation link in the email template:
+Use a separate development Supabase project with Site URL `http://localhost:3000`. The hosted project must use its HTTPS deployment address. Keep email confirmation enabled and configure this link in the signup email template after setting up SMTP:
 
 ```text
 {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email
@@ -64,6 +64,10 @@ npm run dev
 ```
 
 Open [localhost:3000](http://localhost:3000). Sign in or register through `/login`.
+
+## Live deployment
+
+[Open ProspectDesk AI](https://prospectdesk-ai.netlify.app/). Netlify deploys pushes to **`refactor/codebase-cleanup`** after a successful build. Environment changes need a rebuild; SQL migrations must be applied separately. See the [launch and recovery guide](docs/launch.md).
 
 ## Development and testing
 
@@ -85,7 +89,7 @@ FINAL_REVIEW_ARTIFACT_DIR=artifacts/saved-records node scripts/run-final-review.
 
 The runner starts and stops its own servers without changing hosted records or making paid provider calls. Live RLS tests require a separate non-production database and two dedicated accounts; mock tests do not certify deployed RLS or live AI quality.
 
-**Latest checks (26 November 2026):** lint and TypeScript passed; 63 unit tests passed, one live RLS test skipped; 46 browser tests and 19 isolated PostgreSQL security checks passed. The production build and production browser regression passed in [GitHub Actions](https://github.com/jisan3s/prospectdesk-ai/actions/runs/45818249396), using local service doubles. Hosted staging and recovery checks remain outstanding.
+**Latest checks (26 November 2026):** lint, TypeScript, 63 unit tests, 19 isolated PostgreSQL security checks, and 27 public-site browser/API checks passed; one live RLS test was skipped. npm audit reported zero known vulnerabilities. Production builds have passed on Netlify and [GitHub Actions](https://github.com/jisan3s/prospectdesk-ai/actions). Authenticated staging workflows, fresh confirmation-email delivery, and backup restoration still require verification.
 
 ## Security and costs
 
@@ -103,7 +107,7 @@ OpenAI and Tavily usage may incur charges. Use mocks for routine testing and con
 
 More detail: [saved-record pages](docs/saved-records.md) · [UI design and screenshots](docs/ui-modernization.md) · [historical codebase audit](docs/codebase-audit.md).
 
-Before deployment, follow the [launch and recovery checklist](docs/launch.md). GitHub Actions now defines production build/browser checks with local service doubles; a workflow definition alone is not a passing run or a deployed application.
+GitHub Actions checks the production build and browser suites using local service doubles, without spending provider credits.
 
 ## Author and license
 

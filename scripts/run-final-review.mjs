@@ -41,6 +41,13 @@ try {
   const tests=spawn("npx",["playwright","test","--config","playwright.final.config.ts",...process.argv.slice(2)],{stdio:"inherit",env:process.env});
   const code=await new Promise((resolve,reject)=>{tests.on("exit",resolve);tests.on("error",reject);});
   process.exitCode=code ?? 1;
+  if (code === 0 && process.env.FINAL_REVIEW_SMOKE === "1") {
+    const smoke=spawn("npx",["playwright","test","--config","playwright.stage7.config.ts","--workers=1","--output",path.join(artifacts,"smoke"),"--reporter=list,json"],{
+      stdio:"inherit",
+      env:{...process.env,E2E_BASE_URL:"http://127.0.0.1:3000",PLAYWRIGHT_JSON_OUTPUT_NAME:path.join(artifacts,"smoke-results.json")},
+    });
+    process.exitCode=(await new Promise((resolve,reject)=>{smoke.once("exit",resolve);smoke.once("error",reject);})) ?? 1;
+  }
 } catch(error) {
   console.error(error.message);process.exitCode=1;
 } finally {
