@@ -3,6 +3,8 @@
 ProspectDesk AI helps freelancers, agencies, and consultants discover B2B prospects, research companies, qualify leads, and prepare personalized outreach.
 Scout, its AI assistant, analyzes profiles and research to draft LinkedIn messages and emails. Users review, approve, and manually send every message.
 
+**Live site:** [Visit ProspectDesk AI](https://prospectdesk-ai.netlify.app/)
+
 ## Features
 
 - **Scout Profile Analyzer:** save your professional profile and get AI positioning and service recommendations.
@@ -67,7 +69,7 @@ Open [localhost:3000](http://localhost:3000). Sign in or register through `/logi
 
 ## Live deployment
 
-[Open ProspectDesk AI](https://prospectdesk-ai.netlify.app/). Netlify deploys pushes to **`refactor/codebase-cleanup`** after a successful build. Environment changes need a rebuild; SQL migrations must be applied separately. See the [launch and recovery guide](docs/launch.md).
+Netlify deploys pushes to **`refactor/codebase-cleanup`** after a successful build. Environment changes need a rebuild; SQL migrations must be applied separately. See the [launch and recovery guide](docs/launch.md).
 
 ## Development and testing
 
