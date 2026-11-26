@@ -25,6 +25,8 @@ Still outstanding: fresh signup/confirmation email delivery, valid-login/logout 
 
 The GitHub Actions `Verify application` workflow uses Node 24 and synthetic credentials. It runs dependency auditing, lint, generated-route type checks, unit tests, isolated PostgreSQL security checks, then a production build and the full workflow suite against `next start`. With `FINAL_REVIEW_SMOKE=1`, it also runs the signed-out smoke suite against that same local instance. The smoke target is forced to loopback, even if an external `E2E_BASE_URL` is inherited. The workflow does not deploy or call live providers.
 
+Checkout, Node setup, and artifact upload use verified Node 24 action releases pinned to full commit revisions. Checkout does not persist its GitHub credentials after fetching the source; workflow permissions remain read-only.
+
 To run the same production browser check locally with ports 3000 and 54329 free:
 
 ```bash
