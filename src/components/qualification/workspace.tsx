@@ -12,8 +12,8 @@ import {
 } from "@/lib/validations/responses";
 
 type Company = { id: string; name: string; website: string | null };
-export function QualificationWorkspace({ companies }: { companies: Company[] }) {
-  const [companyId, setCompanyId] = useState(companies[0]?.id ?? "");
+export function QualificationWorkspace({ companies, initialCompanyId }: { companies: Company[]; initialCompanyId?: string }) {
+  const [companyId, setCompanyId] = useState(companies.find(company => company.id === initialCompanyId)?.id ?? companies[0]?.id ?? "");
   const [assessment, setAssessment] = useState<Qualification | null>(null);
   const [sources, setSources] = useState<Evidence[]>([]);
   const [hits, setHits] = useState<SearchHit[]>([]);

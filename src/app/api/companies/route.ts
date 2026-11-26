@@ -1,3 +1,4 @@
+import { readJsonRequest, enforceRequestRate } from "@/lib/security/request-guard";
 import { hasSameOrigin } from "@/lib/security/same-origin";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -9,7 +10,7 @@ const companySchema = z.object({
   industry: z.string().trim().max(120).optional(),
 });
 
-export async function GET() {
+export async function GET(request: Request) {
   const supabase = await createClient();
 
   const {
@@ -24,13 +25,17 @@ export async function GET() {
     );
   }
 
+  const rateError = await enforceRequestRate(supabase, "record_list");
+  if (rateError) return rateError;
+  const page = z.coerce.number().int().min(1).max(100000).safeParse(new URL(request.url).searchParams.get("page") || 1);
+  if (!page.success) return NextResponse.json({ error: "Invalid page" }, { status: 400 });
   const { data, error } = await supabase
     .from("companies")
     .select(
       "id, name, website, industry, status, created_at"
     )
     .eq("owner_id", user.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }).order("id", { ascending: false }).range((page.data - 1) * 100, page.data * 100 - 1);
 
   if (error) {
     console.error("Company query failed:", error.code);
@@ -65,16 +70,11 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: unknown;
-
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON" },
-      { status: 400 }
-    );
-  }
+  const rateError = await enforceRequestRate(supabase, "record_write");
+  if (rateError) return rateError;
+  const json = await readJsonRequest(request, 16000);
+  if (json.error) return json.error;
+  const body = json.data;
 
   const parsed = companySchema.safeParse(body);
 

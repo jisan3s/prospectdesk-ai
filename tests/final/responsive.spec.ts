@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import fs from "node:fs";
 
+const artifacts = process.env.FINAL_REVIEW_ARTIFACT_DIR || "artifacts/final";
 const services = "http://127.0.0.1:54329";
 for (const width of [375, 768, 1024, 1440]) {
   test(`all six real pages, long content, keyboard navigation, and layout at ${width}px`, async ({ page, request }) => {
@@ -21,7 +22,7 @@ for (const width of [375, 768, 1024, 1440]) {
     const saved = await page.request.post("/api/discover/save", { data: { company: research.company, sources: research.sources, research: research.research } });
     await expect(saved).toBeOK(); const companyId = (await saved.json()).companyId;
     await expect(await page.request.post("/api/outreach/generate", { data: { companyId, contactId: null, channel: "email", messageType: "initial", angle: "" } })).toBeOK();
-    fs.mkdirSync("artifacts/final/screenshots", { recursive: true });
+    fs.mkdirSync(`${artifacts}/screenshots`, { recursive: true });
     for (const route of ["/", "/profile", "/discover", "/qualification", "/outreach", "/login"]) {
       await page.goto(route); await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await expect(page.getByRole("main")).toHaveCount(1);
@@ -43,7 +44,7 @@ for (const width of [375, 768, 1024, 1440]) {
       const unlabelled = await page.locator("main input, main select, main textarea").evaluateAll(elements => elements.filter(el => !(el as HTMLInputElement).labels?.length && !el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby")).length);
       expect(unlabelled, route).toBe(0);
       await page.addStyleTag({ content: "nextjs-portal {display:none !important}" });
-      await page.screenshot({ path: `artifacts/final/screenshots/${route === "/" ? "dashboard" : route.slice(1)}-${width}.png`, fullPage: true });
+      await page.screenshot({ path: `${artifacts}/screenshots/${route === "/" ? "dashboard" : route.slice(1)}-${width}.png`, fullPage: true });
     }
     await page.goto("/");
     if (width < 1024) {
@@ -95,5 +96,5 @@ test("mobile navigation remains open when loading content streams in", async ({ 
   await page.goto("/"); await page.getByRole("button", { name: "Open navigation" }).click();
   const dialog = page.getByRole("dialog"); await expect(dialog).toBeVisible();
   await expect(page.locator("main h1")).toContainText("possibility");
-  await expect(dialog).toBeVisible(); await page.screenshot({ path: "artifacts/final/screenshots/navigation-loading-375.png" }); await page.keyboard.press("Escape"); await expect(dialog).not.toBeVisible();
+  await expect(dialog).toBeVisible(); await page.screenshot({ path: `${artifacts}/screenshots/navigation-loading-375.png` }); await page.keyboard.press("Escape"); await expect(dialog).not.toBeVisible();
 });

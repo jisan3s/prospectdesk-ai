@@ -178,6 +178,7 @@ test("LinkedIn and email generation, persistence, editing, rejection, approval, 
   await expect(page.getByLabel("Subject", { exact: true })).toHaveValue("A website conversation");
   await page.getByLabel("Subject", { exact: true }).fill("[E2E TEST] Edited subject");
   await body.fill("[E2E TEST] Edited email body."); await page.getByRole("button", { name: "Save edits", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("updated successfully");
   await page.reload(); await (await draftButton(page, "email")).click();
   await expect(page.getByLabel("Subject", { exact: true })).toHaveValue("[E2E TEST] Edited subject");
   await expect(body).toHaveValue("[E2E TEST] Edited email body.");

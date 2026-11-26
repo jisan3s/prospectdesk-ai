@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
-const artifacts=path.resolve("artifacts/final");
+const artifacts=path.resolve(process.env.FINAL_REVIEW_ARTIFACT_DIR || "artifacts/final");
 fs.mkdirSync(artifacts,{recursive:true});
 const children=[];
 function start(command,args,env,logName) {
