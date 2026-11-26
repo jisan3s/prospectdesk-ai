@@ -13,7 +13,7 @@ for (const width of [375, 768, 1024, 1440]) {
     await expect(page.getByLabel("Password", { exact: true })).toHaveAttribute("autocomplete", "new-password");
   });
 }
-for (const route of ["/profile", "/discover", "/qualification", "/outreach"]) {
+for (const route of ["/profile", "/discover", "/qualification", "/outreach", "/companies", "/contacts", "/leads", "/drafts"]) {
   test(`${route} remains protected`, async ({ page }) => {
     await page.goto(route);
     await expect(page).toHaveURL(/\/login(?:\?|$)/);
