@@ -1,0 +1,52 @@
+name: Verify application
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54329
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: synthetic-publishable-key
+      RUN_RLS_TESTS: "0"
+      FINAL_REVIEW_MODE: production
+      FINAL_REVIEW_SMOKE: "1"
+      FINAL_REVIEW_ARTIFACT_DIR: artifacts/launch
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npm run lint
+      - run: npx next typegen
+      - run: npx tsc --noEmit
+      - run: npx vitest run
+      - name: Isolated PostgreSQL security checks
+        run: |
+          npm install --prefix "$RUNNER_TEMP/security-db" --no-save --package-lock=false @electric-sql/pglite@0.6.0
+          node scripts/verify-security-database.mjs "$RUNNER_TEMP/security-db/node_modules/@electric-sql/pglite/dist/index.js"
+      - run: npx playwright install --with-deps chromium
+      - name: Production build and isolated browser regression
+        run: node scripts/run-final-review.mjs
+      - name: Retain synthetic test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: launch-verification
+          path: artifacts/launch/
+          retention-days: 7
+          if-no-files-found: ignore

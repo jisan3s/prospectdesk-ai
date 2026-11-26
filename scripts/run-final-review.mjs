@@ -4,6 +4,8 @@ import { pathToFileURL } from "node:url";
 import path from "node:path";
 
 const artifacts=path.resolve(process.env.FINAL_REVIEW_ARTIFACT_DIR || "artifacts/final");
+const mode=process.env.FINAL_REVIEW_MODE || "development";
+if (!["development", "production"].includes(mode)) throw new Error("FINAL_REVIEW_MODE must be development or production");
 fs.mkdirSync(artifacts,{recursive:true});
 const children=[];
 function start(command,args,env,logName) {
@@ -28,11 +30,24 @@ try {
     TAVILY_API_KEY:"synthetic-test-key",LOCAL_SERVICE_DOUBLE:"1",
     NODE_OPTIONS:`--import=${pathToFileURL(path.resolve("tests/fixtures/provider-preload.mjs")).href}`,
   };
-  start("npm",["run","dev","--","--hostname","127.0.0.1"],env,"development.log");
+  if (mode === "production") {
+    const build=start("npm",["run","build"],{...env,NODE_ENV:"production"},"build.log");
+    const code=await new Promise((resolve,reject)=>{build.once("exit",resolve);build.once("error",reject);});
+    if (code !== 0) throw new Error(`Production build failed; inspect ${path.join(artifacts,"build.log")}`);
+  }
+  // Retain the log filename used by provider-diagnostic regression assertions.
+  start("npm",["run",mode === "production" ? "start" : "dev","--","--hostname","127.0.0.1"],{...env,NODE_ENV:mode},"development.log");
   await waitFor("http://127.0.0.1:3000/login");
   const tests=spawn("npx",["playwright","test","--config","playwright.final.config.ts",...process.argv.slice(2)],{stdio:"inherit",env:process.env});
   const code=await new Promise((resolve,reject)=>{tests.on("exit",resolve);tests.on("error",reject);});
   process.exitCode=code ?? 1;
+  if (code === 0 && process.env.FINAL_REVIEW_SMOKE === "1") {
+    const smoke=spawn("npx",["playwright","test","--config","playwright.stage7.config.ts","--workers=1","--output",path.join(artifacts,"smoke"),"--reporter=list,json"],{
+      stdio:"inherit",
+      env:{...process.env,E2E_BASE_URL:"http://127.0.0.1:3000",PLAYWRIGHT_JSON_OUTPUT_NAME:path.join(artifacts,"smoke-results.json")},
+    });
+    process.exitCode=(await new Promise((resolve,reject)=>{smoke.once("exit",resolve);smoke.once("error",reject);})) ?? 1;
+  }
 } catch(error) {
   console.error(error.message);process.exitCode=1;
 } finally {
@@ -40,6 +55,7 @@ try {
     const state=await (await fetch("http://127.0.0.1:54329/__test/state")).json();
     const summary={
       environment:"local in-memory service double; not Supabase PostgreSQL",
+      applicationMode:mode,
       lastScenarioRecordIds:Object.fromEntries(Object.entries(state.tables).map(([name,rows])=>[name,rows.map(row=>({id:row.id,owner_id:row.owner_id||row.user_id}))])),
       createdSyntheticRecords:(await (await fetch("http://127.0.0.1:54329/__test/audit")).json()).records,
       liveRecordsCreatedByThisRun:0,

@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Netlify automatically provides its Next.js adapter. Keep real environment
+# values in Netlify's environment settings, never in this file.
