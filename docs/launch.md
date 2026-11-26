@@ -47,6 +47,21 @@ Live OpenAI/Tavily tests require a separately agreed request and spending budget
 
 ## Deployment gate
 
+### Netlify Free setup
+
+The root `netlify.toml` sets Node 24, `npm run build`, and `.next` output. Netlify supplies the Next.js adapter automatically; do not deploy a static export or the service-double build from CI.
+
+1. Import `jisan3s/prospectdesk-ai` into the existing Netlify account. Grant repository access only to this project when prompted, after reviewing the permissions. Select the Free plan and do not enable paid add-ons.
+2. Set the production branch to `refactor/codebase-cleanup` for the current release. Do not accidentally deploy the older `main` revision.
+3. Add the values from `.env.local` through Netlify's protected environment settings. Supabase public variables must be available during the build and in functions. Provider keys must be available to functions and remain server-only. Never enter real values into `netlify.toml` or commit them.
+4. Deploy and record the resulting HTTPS `netlify.app` URL. Check build/adapter logs and the running login page before configuring Auth URLs.
+5. Set the Supabase Site URL to the chosen canonical HTTPS origin and allow its exact `/auth/confirm` URL. Retain any existing approved local/staging redirects; do not add broad wildcard redirects.
+6. Verify login/confirmation/logout, signed-out route/API rejection, private responses, and mobile navigation on the deployed host. Keep mutating or paid tests gated by the staging and spending approvals above.
+
+No Netlify project has been created or deployed merely by adding this configuration. Hosting limits and commercial-use terms should be reviewed in the [Free-plan documentation](https://www.netlify.com/blog/introducing-netlify-free-plan/) and [pricing](https://www.netlify.com/pricing/).
+
+### Release checks
+
 - Select hosting, production domain, and a staging URL; use separate secret scopes for staging and production.
 - Set the five variables in `.env.example` as appropriate. Public Supabase values are embedded at build time; provider keys remain server-only.
 - Set Supabase Site URL and allowed redirects to the exact HTTPS deployment URLs. Verify the email template uses `/auth/confirm?token_hash={{ .TokenHash }}&type=email`.
